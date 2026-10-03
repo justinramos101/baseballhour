@@ -270,3 +270,35 @@ fn quantize_maps_truecolor_to_the_256_color_palette() {
             .all(|cell| !matches!(cell.fg, Color::Rgb(..)) && !matches!(cell.bg, Color::Rgb(..)))
     );
 }
+
+#[test]
+fn one_shot_ansi_output_honors_the_color_depth() {
+    let binary = env!("CARGO_BIN_EXE_baseballhour");
+    let frame = |depth: &str| {
+        let output = std::process::Command::new(binary)
+            .args(["--demo", "--once", "--size", "40x12", "--format", "ansi"])
+            .args(["--color", depth])
+            .output()
+            .unwrap();
+        assert!(output.status.success());
+        String::from_utf8(output.stdout).unwrap()
+    };
+    let indexed = frame("256");
+    assert!(indexed.contains("38;5;") && !indexed.contains("38;2;"));
+    assert!(frame("truecolor").contains("38;2;"));
+}
+
+#[test]
+fn demo_day_follows_the_displayed_timezone() {
+    let binary = env!("CARGO_BIN_EXE_baseballhour");
+    for zone in ["Asia/Tokyo", "Pacific/Auckland", "America/Los_Angeles"] {
+        let output = std::process::Command::new(binary)
+            .args(["--demo", "--once", "--format", "plain", "--timezone", zone])
+            .output()
+            .unwrap();
+        let screen = String::from_utf8(output.stdout).unwrap();
+        let header = screen.lines().next().unwrap_or_default();
+        assert!(header.contains("TODAY"), "{zone}: {header}");
+        assert!(screen.contains("LIVE NOW"), "{zone}");
+    }
+}

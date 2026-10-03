@@ -755,8 +755,12 @@ fn linescore(app: &App, game: &Game, available: u16, names: bool) -> (Vec<Line<'
         .unwrap_or_default();
     let has_line = !innings.is_empty();
     let sheet = game.linescore.as_ref();
-    let has_he = sheet
-        .is_some_and(|l| l.away_hits.is_some() || l.home_hits.is_some() || l.away_errors.is_some());
+    let has_he = sheet.is_some_and(|l| {
+        l.away_hits.is_some()
+            || l.home_hits.is_some()
+            || l.away_errors.is_some()
+            || l.home_errors.is_some()
+    });
     let totals = if !has_line {
         0
     } else if has_he {

@@ -171,7 +171,7 @@ fn main() -> Result<()> {
         app.view = View::Nearby;
     }
     if app.demo {
-        app.now = Utc.from_utc_datetime(&date.and_hms_opt(23, 10, 0).unwrap());
+        app.now = demo_evening(date, timezone);
         set_demo(&mut app);
     }
     if args.json || args.once {
@@ -193,7 +193,7 @@ fn main() -> Result<()> {
             )?;
             println!();
         } else {
-            let buffer = render::capture(&app, args.size.0, args.size.1);
+            let mut buffer = render::capture(&app, args.size.0, args.size.1);
             let format = args.format.unwrap_or_else(|| {
                 if io::stdout().is_terminal() {
                     Format::Ansi
@@ -201,6 +201,9 @@ fn main() -> Result<()> {
                     Format::Plain
                 }
             });
+            if matches!(format, Format::Ansi) && !truecolor(args.color) {
+                ui::quantize(&mut buffer);
+            }
             render::write(&buffer, format, &mut io::stdout().lock())?;
         }
         return Ok(());
@@ -224,10 +227,30 @@ fn main() -> Result<()> {
     )
 }
 
+/// Demo time is 7:10 PM on the demo date in the displayed timezone.
+fn demo_evening(date: NaiveDate, timezone: Option<Tz>) -> chrono::DateTime<Utc> {
+    let evening = date.and_hms_opt(19, 10, 0).unwrap_or_default();
+    timezone
+        .map_or_else(
+            || {
+                Local
+                    .from_local_datetime(&evening)
+                    .earliest()
+                    .map(|t| t.to_utc())
+            },
+            |tz| {
+                tz.from_local_datetime(&evening)
+                    .earliest()
+                    .map(|t| t.to_utc())
+            },
+        )
+        .unwrap_or_else(|| Utc.from_utc_datetime(&evening))
+}
+
 /// Demo time stands still on the first demo day; other dates read as past or future.
 fn set_demo(app: &mut App) {
     app.accept(
-        data::demo_from(app.query, app.now.date_naive()),
+        data::demo_from(app.query, app.local_time(app.now).date_naive()),
         DataState::Fresh,
     );
 }
