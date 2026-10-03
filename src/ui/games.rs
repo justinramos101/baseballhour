@@ -407,7 +407,8 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App) {
         }
     }
     if scrolled {
-        let mut state = ScrollbarState::new(usize::from(total - inside.height))
+        // One position per scroll offset, so the last offset reaches the track's end.
+        let mut state = ScrollbarState::new(usize::from(total - inside.height) + 1)
             .position(usize::from(offset))
             .viewport_content_length(usize::from(inside.height));
         frame.render_stateful_widget(

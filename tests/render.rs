@@ -302,3 +302,41 @@ fn demo_day_follows_the_displayed_timezone() {
         assert!(screen.contains("LIVE NOW"), "{zone}");
     }
 }
+
+#[test]
+fn slate_scrollbar_reaches_the_end_at_the_last_game() {
+    let mut app = app();
+    let last = app.visible_games().last().unwrap().id;
+    app.selected = Some(last);
+    // At this height the slate overflows by a single row: two scroll offsets.
+    let screen = plain(&app, 120, 38);
+    let lines: Vec<&str> = screen.lines().collect();
+    let bottom = lines
+        .iter()
+        .position(|line| line.contains(" of 15 "))
+        .expect("scrolled slate");
+    let top = lines
+        .iter()
+        .position(|line| line.contains("THE SLATE"))
+        .unwrap();
+    // The thumb has moved off the first track row and reaches the last one.
+    assert!(lines[top + 1].trim_end().ends_with('│'), "{screen}");
+    assert!(lines[bottom - 1].trim_end().ends_with('┃'), "{screen}");
+}
+
+#[test]
+fn text_inputs_keep_animating_without_a_selection() {
+    let mut app = app();
+    app.search = "no such team".into();
+    app.normalize_selection();
+    assert!(app.selected.is_none());
+    app.snapshot
+        .as_mut()
+        .unwrap()
+        .games
+        .retain(|g| g.status != GameStatus::Live);
+    app.input = Input::Search;
+    assert!(baseballhour::ui::animates(&app));
+    app.input = Input::Normal;
+    assert!(!baseballhour::ui::animates(&app));
+}

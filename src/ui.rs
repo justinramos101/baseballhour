@@ -137,6 +137,10 @@ fn pulse(tick: u64, period: u64) -> f64 {
 #[must_use]
 pub fn animates(app: &App) -> bool {
     matches!(app.state, DataState::Loading)
+        || matches!(
+            app.input,
+            Input::Search | Input::Date { .. } | Input::Place { .. }
+        )
         || app.selected_game().is_some()
         || app.games().iter().any(|g| g.status == GameStatus::Live)
 }
