@@ -340,3 +340,20 @@ fn text_inputs_keep_animating_without_a_selection() {
     app.input = Input::Normal;
     assert!(!baseballhour::ui::animates(&app));
 }
+
+#[test]
+fn score_glow_ages_while_its_game_is_hidden() {
+    let mut app = app();
+    app.snapshot
+        .as_mut()
+        .unwrap()
+        .games
+        .retain(|g| g.status != GameStatus::Live);
+    app.search = "no such team".into();
+    app.normalize_selection();
+    app.tick = 100;
+    app.scored.insert(app.games()[0].id, 95);
+    assert!(baseballhour::ui::animates(&app));
+    app.tick = 130;
+    assert!(!baseballhour::ui::animates(&app));
+}

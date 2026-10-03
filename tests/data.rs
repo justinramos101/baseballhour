@@ -337,4 +337,13 @@ fn demo_reads_past_dates_as_final_and_future_dates_as_scheduled() {
     assert!(future.games.iter().filter(|g| !off(g)).all(|g| {
         g.status == GameStatus::Scheduled && g.away.score.is_none() && g.linescore.is_none()
     }));
+    // Every game moves to the requested slate, not just its status.
+    let christmas = on("2026-12-25").date;
+    assert!(future.games.iter().all(|g| {
+        g.official_date == christmas
+            && g.starts_at.is_some_and(|start| {
+                let day = start.date_naive();
+                day == christmas || day == christmas.succ_opt().unwrap()
+            })
+    }));
 }

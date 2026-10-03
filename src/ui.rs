@@ -143,6 +143,8 @@ pub fn animates(app: &App) -> bool {
         )
         || app.selected_game().is_some()
         || app.games().iter().any(|g| g.status == GameStatus::Live)
+        // Let a score glow age out even while its game is hidden.
+        || app.scored.values().any(|&at| app.tick.wrapping_sub(at) < 30)
 }
 
 fn live_color(app: &App) -> Color {
