@@ -610,7 +610,7 @@ fn footer_controls(app: &App, keys: Keys) -> Vec<Span<'static>> {
     if matches!(app.input, Input::Search) || !app.search.is_empty() {
         let mut line = vec![
             keycap(" / "),
-            text(" Search ", MUTED),
+            text(" Search teams / ballparks › ", MUTED),
             bold(app.search.clone(), TEXT),
         ];
         if matches!(app.input, Input::Search) {
