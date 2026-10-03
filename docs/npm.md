@@ -52,6 +52,8 @@ Inspect the run in [GitHub Actions](https://github.com/justinramos101/baseballho
 
 Correct the failed check or publisher credential, then dispatch the workflow again with the same tag. Do not move the tag or replace the native release.
 
+After `npm publish` succeeds, the workflow waits up to five minutes for the registry to list the new version and confirm its integrity. If npm takes longer, the job fails even though the package was published. Once `npm view baseballhour@VERSION` shows the version, dispatch the workflow again with the same tag to record the integrity check.
+
 An existing npm version succeeds only when its published integrity matches the tested tarball. Different bytes fail. npm versions cannot be overwritten. If package contents must change, publish a new version.
 
 GitHub serializes publication jobs. A newer pending job can replace an older pending job. If a run is cancelled before publication, dispatch that tag again.

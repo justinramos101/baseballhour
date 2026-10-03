@@ -84,7 +84,8 @@ jobs:
        !github.event.release.draft && !github.event.release.prerelease) ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish == true)
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # Publication waits up to five minutes for the registry to list the version.
+    timeout-minutes: 15
     concurrency:
       group: npm-publication
       cancel-in-progress: false

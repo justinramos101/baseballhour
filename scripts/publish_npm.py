@@ -14,6 +14,9 @@ from package_npm import inspect_tarball, load_release, verify_evidence
 
 
 REGISTRY = "https://registry.npmjs.org"
+# A new version can take a few minutes to appear after npm accepts it.
+VISIBILITY_POLL_SECONDS = 10
+VISIBILITY_TIMEOUT_SECONDS = 300
 
 
 def registry_integrity(version):
@@ -49,16 +52,22 @@ def publish(archive, release_manifest, evidence_path):
         return
     subprocess.run(["npm", "publish", str(archive), "--access", "public", "--provenance",
                     "--ignore-scripts", "--registry", REGISTRY], check=True)
-    for attempt in range(6):
+    attempts = VISIBILITY_TIMEOUT_SECONDS // VISIBILITY_POLL_SECONDS
+    for attempt in range(attempts + 1):
         actual = registry_integrity(release["version"])
         if actual == expected:
             print("Published npm integrity matches the verified tarball.")
             return
         if actual is not None:
             raise ValueError("published npm integrity differs from the verified tarball")
-        if attempt < 5:
-            time.sleep(5)
-    raise ValueError("published npm version is still absent after 25 seconds")
+        if attempt < attempts:
+            waited = attempt * VISIBILITY_POLL_SECONDS
+            print(f"Waiting for npm to list the new version ({waited}s elapsed).", flush=True)
+            time.sleep(VISIBILITY_POLL_SECONDS)
+    raise ValueError(
+        f"published npm version is still absent after {VISIBILITY_TIMEOUT_SECONDS} seconds; "
+        "dispatch the workflow again with the same tag once npm lists it"
+    )
 
 
 def main():
