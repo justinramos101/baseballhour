@@ -26,7 +26,7 @@ npx baseballhour --league all --near Denver
 To select a version, include it in the package name:
 
 ```sh
-npx baseballhour@0.1.0 --demo
+npx baseballhour@0.2.0 --demo
 ```
 
 ## Install with npm
@@ -89,7 +89,7 @@ curl -fsSL https://raw.githubusercontent.com/justinramos101/baseballhour/main/sc
 The installer uses the latest GitHub release by default. Pass a release tag to install a specific version:
 
 ```sh
-./install.sh --version v0.1.0
+./install.sh --version v0.2.0
 ```
 
 Pass `--prefix` to install somewhere other than `$HOME/.local`:
@@ -102,7 +102,7 @@ Pass `--prefix` to install somewhere other than `$HOME/.local`:
 Pass installer arguments after `--` when you pipe the script to `sh`:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/justinramos101/baseballhour/main/scripts/install.sh | sh -s -- --version v0.1.0 --prefix "$HOME/.local"
+curl -fsSL https://raw.githubusercontent.com/justinramos101/baseballhour/main/scripts/install.sh | sh -s -- --version v0.2.0 --prefix "$HOME/.local"
 ```
 
 The installer never invokes `sudo`.
@@ -128,18 +128,18 @@ Verify the archive from the download directory. Replace the filename with the ar
 
 ```sh
 # Linux
-sha256sum --check baseballhour-v0.1.0-x86_64-unknown-linux-musl.tar.gz.sha256
+sha256sum --check baseballhour-v0.2.0-x86_64-unknown-linux-musl.tar.gz.sha256
 
 # macOS
-shasum -a 256 --check baseballhour-v0.1.0-aarch64-apple-darwin.tar.gz.sha256
+shasum -a 256 --check baseballhour-v0.2.0-aarch64-apple-darwin.tar.gz.sha256
 ```
 
 Extract the archive and install the binary:
 
 ```sh
-tar -xzf baseballhour-v0.1.0-aarch64-apple-darwin.tar.gz
+tar -xzf baseballhour-v0.2.0-aarch64-apple-darwin.tar.gz
 mkdir -p "$HOME/.local/bin"
-install -m 755 baseballhour-v0.1.0-aarch64-apple-darwin/baseballhour "$HOME/.local/bin/baseballhour"
+install -m 755 baseballhour-v0.2.0-aarch64-apple-darwin/baseballhour "$HOME/.local/bin/baseballhour"
 ```
 
 Run `baseballhour --demo` to check the result.

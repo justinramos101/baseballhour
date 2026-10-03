@@ -32,7 +32,7 @@ To publish an existing release, run:
 
 ```sh
 gh workflow run npm-publish.yml --repo justinramos101/baseballhour --ref main \
-	-f tag=v0.1.0 -f publish=true
+	-f tag=v0.2.0 -f publish=true
 ```
 
 The npm workflow packages one tarball and verifies that same tarball on macOS and Linux, on x86_64 and ARM64. Publication runs after every verifier passes. The npm credential is available only to the final publication step.
@@ -43,7 +43,7 @@ To run the complete packaging and verification pipeline without an npm credentia
 
 ```sh
 gh workflow run npm-publish.yml --repo justinramos101/baseballhour --ref main \
-	-f tag=v0.1.0 -f publish=false
+	-f tag=v0.2.0 -f publish=false
 ```
 
 Inspect the run in [GitHub Actions](https://github.com/justinramos101/baseballhour/actions/workflows/npm-publish.yml). Confirm that all four verification jobs pass.
@@ -61,8 +61,8 @@ GitHub serializes publication jobs. A newer pending job can replace an older pen
 Use Python 3.11 or later, npm, and the GitHub CLI to reproduce packaging for a published release:
 
 ```sh
-python3 scripts/package_npm.py --tag v0.1.0
-python3 scripts/verify_npm.py dist/npm/baseballhour-0.1.0.tgz \
+python3 scripts/package_npm.py --tag v0.2.0
+python3 scripts/verify_npm.py dist/npm/baseballhour-0.2.0.tgz \
 	--release-manifest dist/npm/release.json --evidence dist/npm/evidence.json
 ```
 
@@ -82,7 +82,7 @@ The fixture in `npm/release.json` selects an existing release independently of t
 From outside the source checkout, run:
 
 ```sh
-npx --yes baseballhour@0.1.0 --version
+npx --yes baseballhour@0.2.0 --version
 npx --yes baseballhour --demo
 ```
 

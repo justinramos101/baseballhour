@@ -2,7 +2,7 @@
 
 This file records user-visible changes to Baseball Hour.
 
-## Unreleased
+## [0.2.0] - 2026-10-03
 
 - Redrew the ballpark atlas with an Albers equal-area projection, shaded land, coastal water, a graticule, and a scale bar.
 - Added a glow and sonar ping on the selected ballpark, pulsing live markers, and a dashed route from your Nearby place.
@@ -29,4 +29,5 @@ Initial public release.
 - Added a labeled synthetic demo and plain text, ANSI, SVG, and JSON output.
 - Added native release archives for Intel and ARM64 macOS and Linux systems.
 
+[0.2.0]: https://github.com/justinramos101/baseballhour/releases/tag/v0.2.0
 [0.1.0]: https://github.com/justinramos101/baseballhour/releases/tag/v0.1.0
