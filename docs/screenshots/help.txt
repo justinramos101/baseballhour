@@ -1,24 +1,24 @@
-  ◇ BASEBALL HOUR  DEMO                             Sat, Jul 4, 2026   [g] date 
-     ╭ Keyboard guide ────────────────────────────────────────────────────╮York 
-     │                                                                    │     
-   1 │    1 / 2 / 3       All games / Following / Nearby                  │LB   
- ╭ BA│    Up / Down, j/k  Select a game and its ballpark                  │───╮ 
- │ ⣧⣄│    Left / Right    Previous / next schedule day                    │3  │ 
- │ ⠈⠻│    g               Jump to a date, YYYY-MM-DD                      │6  │ 
- │   │    t               Return to today                                 │5  │ 
- │  ⠐│    /               Search teams, cities, ballparks                 │4  │ 
- │  ⠐│    f               Follow or unfollow either team                  │3  │ 
- │   │    p               Choose a nearby city or coordinates             │M  │ 
- │   │    l               MLB, MiLB level, or all leagues                 │M  │ 
- │   │    Enter           Expand game details                             │M  │ 
- │   │    r               Refresh the schedule                            │M  │ 
- │   │    Esc             Close, clear search, return to All              │M  │ 
- │   │    q / Ctrl-C      Quit                                            │l  │ 
- │ ● │  Times use the displayed timezone. Dates are MLB slate dates.      │l  │ 
- │ ! │  +1d means the game starts on the next local day.                  │   │ 
- ╰───│  Nearby: straight-line miles. Use l for minor leagues, too.        │───╯ 
- ────│                                                                    │──── 
-  PIT│  Esc Close · q Quit                                                │     
-  Fir│                                                                    │     
- DEMO╰────────────────────────────────────────────────────────────────────╯     
-  ↑↓ Game  ←→ Day  / Search  f Follow  l League  ? Help  q Quit                 
+  ◆ BASEBALL HOUR  DEMO     SAT, JUL 4 2026   TODAY                    ● 5 LIVE 
+   1 Al╭─ KEYBOARD GUIDE ───────────────────────────────────────────────╮ MLB   
+ ╭─ BAL│   1   2   3        All games / Following / Nearby              │─────╮ 
+ │  ⠙⣷ │   ↑   ↓   j   k    Select a game and its ballpark              │ 3rd │ 
+ │  ⢠⣼⡇│   ←   →            Previous / next schedule day                │ 6th │ 
+ │  ⠈⢉⡆│   g                Jump to a date, YYYY-MM-DD                  │ 5th │ 
+ │   ⠈⢿│   t                Return to today                             │ 4th │ 
+ │    ⡸│   /                Search teams, cities, ballparks             │ 3rd │ 
+ │   ⣰⠁│   f                Follow or unfollow either team              │5 PM │ 
+ │   ⢸●│   p                Choose a nearby city or coordinates         │0 PM │ 
+ │   ⠘⣄│   l                MLB, MiLB level, or all leagues             │8 PM │ 
+ │    ⠈│   Enter            Expand game details                         │0 PM │ 
+ │     │   r                Refresh the schedule                        │0 PM │ 
+ │     │   Esc              Close, clear search, return to All          │inal │ 
+ │     │   q   Ctrl-C       Quit                                        │inal │ 
+ │     │                                                                │inal │ 
+ │     │  Times use the displayed timezone. Dates are MLB slate dates.  │oned │ 
+ │     │  +1d means the game starts on the next local day.              │oned │ 
+ ╰ ● Li│  Nearby: straight-line miles. Use l for minor leagues, too.    │─────╯ 
+ ──────│                                                                │────── 
+  ▌ PIT│  Esc Close · q Quit                                            │       
+  Natio╰────────────────────────────────────────────────────────────────╯       
+  ● DEMO · Illustrative schedules and scores                                    
+  ↑↓ Game  ←→ Day  ? Help  q Quit                                               

@@ -1,42 +1,42 @@
-  ◇ BASEBALL HOUR  DEMO                                                                                         Sat, Jul 4, 2026   [g] date 
-     Every game has a place.                                                                                               America/New_York 
-                                                                                                                                            
-   1 All games   2 Following   3 Nearby                                                                                      l MLB + MiLB   
-                                                                                                                                            
- ╭ BALLPARK ATLAS ────────────────────────────────────────────────────────────────────────╮╭ NEAR Denver ─────────────────────────────────╮ 
- │ ⣣⣀⡀⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⠈⠑⠢⠜⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇ ││ Nearest first · straight-line mi             │ 
- │ ⠒⠻⢍⡙⠶⣤⢄⡀⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⢀⣿⣿⢸⣿⣿⣿⣿⣀⣀⣀⡀⢀⡀⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⢀⣀⠤⣊⣉⣉ ││›   SF  4  COL  5                      Top 4  │ 
- │    ⠉⠱⡚⠦⣫⠉⠉⠉⠉⠉⠉⠉⡏⢫⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹⠉⠉⠉⠉⠉⠉⠉⣿⢸⣇⠈⠉⠈⠉⠑⠒⠤⠔⠢⠤⠔⠒⠤⣀⡀⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⡿⣠⠗⠊⠉⣿⣿⢠ ││   1 mi · Coors Field                         │ 
- │      ⢱⢄⡈●⡇SEA⣀⣀⣇⢸⠉⢲⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⢸⣀⣀⣀⣀⣀⣀⣀⣀⣀⣸⣿⣿⣿⣿⡇⣰⠂⣿⠤⠤⢄⡀⣿⣿⠈⠑⠤⣀⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⠒⢻⠁⠉⢹⣿⣿⣿⡇ ││    LV at SL                         8:35 PM  │ 
- │      ⢸⣿⠉⠉⠉⠉⣿⣿⣿⢀⡜⢸⣿⠈⠙⢤⣀⣠⡖⠒⠒⠒⠒⠒⠒⠒⠒⢺⣿⣿⢸⣿⣿⣿⣿⣿⢸⠸⡀⣿⣿⣿·⣇STP⣿⣿⠘⠂⣿⣿⣿⣿⢸⠱⡀⣿⣿⣿⡇⣿⣿ROC⠤⠔⡖⠒⣲⢲⠁⢸⣿⣈⡱⠖⡲⠖ ││   376 mi · The Ballpark at America First Squ…│ 
- │     ⢀⠇⣿●⣿EUG⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⢸⡇⣿⣿⣿⣿⡇⣿⣿⣿⢸⣀⣀⣀⣀⣀⣀⣀⣀⣀⣰⠗⠒⠒⠒⠒⠒⠚⣇⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸TOL⣿⣿⣰⠒!⠒●⣿SYR⣰⣁⣸⠔⠊⠉   ⠓⠒ ││   IND  2  OMA  2                   Bottom 3  │ 
- │     ⠈⡖⠒⠒⠒⠒⠒⡖⠒⠒⠒⠓⠒⠒⠒⡖⠒⠒⠒⣇⣀⣀⣀⣀⣀⣀⣀⣀⣸⣀⣀⡀⣿⣿⣿⣿⣿⢸⠈⢣⣿⣿⣿⡇⣿⣿⣬⠟⠉⠉○⡄CHC⠤○⠫●⠊CLE⠒⠒⠒⠒⠒⣄⣀⣞●⣲HAR       ││   477 mi · Werner Park                       │ 
- │      ⢇⣿⣿⣿⡇⣿⡇⣿⣿⣿⣿⢸⣿⣿⡇⣿⣿○⣿SL⣿⣿⡇⢠⡞◆⢳COL⠤⠤⠤⠤⠤⠤⠤●⢶OMA +1⣿⣿⣿⢸⡇⣿⣿⢸⣿⢸●⣿COL⣀⣀⣀⣀⣀⣼⠧○⠉NYY         ││   IND  6  OMA  0                      Final  │ 
- │      ⠈⠢⡀⣿●⣿ATH⣿⣿⢸⣿⣿⡇⣿⣿⢸⣿⣿⢸⣿⣿⡇⣿⠓⠒⠚⣿⣿⡇⣿⣿⣿⣿⣿⢸⣿⣿⣿○⣿KC⣿⠘⢶⣿⣿⣠⣃⣀⡤⠞○⠲CIN⣿⣠⠵⠋⠩●⡧WSH             ││   477 mi · Werner Park                       │ 
- │        ⠘●⡇SAN⠈⠒⠤⡀⣿⣿⡧⠔⠒⠒⠒⠒⢼⠤⠤⠤⠤⠤⠤⠤⠤⣤⣧⣤⣤⡤⠤⠤⠤⠤⠤⠤⢼⣀⣀⣀⣀⣀⣀⣻⣖⡭⠬●⢄NAS +1⣋⣁⣀⣀⣀⣀⣷⡁               ││   SUG at OKC                      Postponed  │ 
- │         ⠈⠒⡄⣿⣿⣿⣿⣿⠈⠑⣏⠁⣿⣿⢸⣿⣿⢸⣿⣿⡇⣿⣿⣿⣿⣿⡇⢸⣿⣿⡇⣿⣿!⣿OKC⣿⡇⣿⣿⣿●⠧MEM⣀⣀⣀⣠⣒⡯⠭⠤⣄⣀○⣿DUR⠃               ││   505 mi · Chickasaw Bricktown Ballpark      │ 
- │          LAD⠒·!⣿LAA⠁⣿○⢸AZ⢸⣿⣿⡇⣿⣿⣿⣿⣿⡇⢸⣿⣿⠉⠑⠒⠒⠦⠖⠒⠺⣄⣀⣀⣀⡎⠁⣿⣿⡇⣿⣿⠈⡆·⢸ATL⣿⣿⡩⠒⠊⠁                 ││   SAC  6  ELP  8                      Final  │ 
- │               ⠈⢖⠉⠉⣛⣢⠤⣀⡀⣿⣿⢸⣿⣀⣀·⠤ELP⠇⢸⣿⣿⣿⣿⣿⢸·⣿TEX⡇⣿⢀⠗⣿⣿⢰⠁⣿⣿⣿⣱⣿⢸⣿⣿⢹⠔⠉                     ││   558 mi · Southwest University Park         │ 
- │                ⠈⢆⠈⡆ ⢇⣿⠈⠉⠉⠉⠉⠁⡇⠈⠉⢆⣿⣿⣿⢸⣿⣿RR⣿○⣿⣿!⣿HOU⠈⠉⠉⣧⠼⠤⠶⠶⢖⠛⣒⡒⠢⠴⢎                       ││   PHI at KC                         8:10 PM  │ 
- │                  ⠑⠬⡑⣄⠱⣀⣿⣿⣿⣿⣿⡇⣿⣿⣿⠑⠢⠜⠉⠑⢢⣿⣿⣿⢸⢀⡠⠔⠉⠉⠉⠉⠉⠑⠒⠚     ⠉ ⠈⢆⣿⠈⢆                      ││   563 mi · Kauffman Stadium                  │ 
- │                  ⠐⠪⣀⡘⠢⡀⠙⢄⡀⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⠱⡀⣿⢠⠃                  ⠸⡀⣿⠘⡄⢀⣀⣄                  ││   MIL at AZ                         9:40 PM  │ 
- │                     ⠈⢱⠱⡀ ⠪⢄⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⠈⠑⢚⠆                   ⠈⢢⣀⠇⠈⢉⡑⠃                 ││   585 mi · Chase Field                       │ 
- │                      ⠈⠒⠼⣢  ⠑⢄⢿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡎                         ⠘⣷                  ││   DET  3  TEX  0                      Final  │ 
- │                         ⠑⠁   ⠉⢢⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇                ⢀⢤⣒⠞⢟⣉⣉⠑⠤⠤⢄                  ││   653 mi · Globe Life Field                  │ 
- │  ● Live   ○ Upcoming   · Final   ◆ Selected   ! Status alert                           ││   BUF  5  STP  6                      Final  │ 
- │  Distances are straight-line estimates, not driving routes.                            ││   706 mi · CHS Field                         │ 
- ╰────────────────────────────────────────────────────────────────────────────────────────╯│   ABQ at RR                         8:05 PM  │ 
- ╭ AT THE BALLPARK ───────────────────────────────────────────────────────────────────────╮│   760 mi · Dell Diamond                      │ 
- │ SF  4   @   COL  5    Top 4                                                            ││   BOS at LAA                      Postponed  │ 
- │ Coors Field · Denver                                                                   ││   822 mi · Angel Stadium                     │ 
- │ San Francisco Giants at Colorado Rockies                                               ││    SD  0  LAD  3                      Final  │ 
- │        1  2  3  4    R  H  E                                                           ││   829 mi · UNIQLO Field at Dodger Stadium    │ 
- │ SF     4  0  0  0    4  -  -                                                           ││   CLT  4  MEM  5                      Top 4  │ 
- │ COL    5  0  0  0    5  -  -                                                           ││   878 mi · AutoZone Park                     │ 
- │ Bases ◇ ◇ ◆  Balls 2 · Strikes 1 · Outs 1                                              ││    TB at HOU                      Postponed  │ 
- │ Probables  Robbie Ray / Sean Sullivan                                                  ││   879 mi · Daikin Park                       │ 
- │ First pitch 8:10 PM · NBCS BA / Rockies.TV                                             ││ 1-15 of 33 · ↑↓ scroll                       │ 
- ╰────────────────────────────────────────────────────────────────────────────────────────╯╰──────────────────────────────────────────────╯ 
- DEMO · Illustrative schedules and scores                                                                                                   
-  ↑↓ Game  ←→ Day  t Today  g Date  / Search  f Follow  p Place  l League  Enter Details  ? Help  q Quit                                    
-                                                                                                                                            
+  ◆ BASEBALL HOUR  DEMO                        ‹ Fri 3    SAT, JUL 4 2026   TODAY     Sun 5 ›                  ● 13 LIVE   7:10 PM New York 
+   1 All games 33    2 Following 1    3 Nearby 33                                                                           l  MLB + MiLB   
+ ╭─ BALLPARK ATLAS ─────────────────────────────────────────────────────────────────────╮╭─ NEAR Denver ──────────────────────────────────╮ 
+ │       ⡇  ⣧● SEA    ⢀⠂⠠⠁ ⢀⠠⠊⠁⠈⠉⠉⠉⠉⠉⠉⠉⠑⠒⠒⠒⠒⠒⠒⢲⠒⠒⠒⠋⠉⠉⠉⠉⠉⠉⠉⠉⡏⠑⠄⡀ ⠉⠉⠉⠑⠒⠔⠊⠒⠒⠒⠁⠑⠌⠉⠒⠲⠤⣀⡀     ││ Nearest first · straight-line miles            │ 
+ │       ⡇  ⡙⠁        ⠰ ⠈⡦⠊⠁                  ⢐            ⠱⡀ ⠈⠑⢄           ⠈⢆    ⠘⠶⢆⢄  ││▎ ▌ SF    4  ▲ 4th       ◇   ●○            1 mi ┃ 
+ │       ⡏⢑⡞          ⠌⡠⠊⠈⢂                   ⢐             ⡇    ⠑⢄ ⠠   ⠐⠤⢀⣀⣀ ⠡⡀     ⠉⠒⠲││▎ ▌ COL   5             ◇ ◆  2-1    Coors Field ┃ 
+ │      ⡸⢀⠆⠑⠂⠂⠒⠂⠒⠒⠂⠂⠂⠤⢏   ⠨⠊        ⢀⡀⠤⠂⠒ 500 mi ⠂⠢⠄⢄       ⠸⡀     ⠑⠤⠃       ⠹⡄⠑⠄       ││  ▌ LV   52-32  8:35 PM                  376 mi ┃ 
+ │     ⢠⢃⠅          ⡔⠁⡘⠂  ⠨⠕⠄    ⢀⠔⠐⠁         ⢘⠐⠐⠐⠂⠂⠂⠃⠓⠦⡂⠁⠁⠁⢱⡁      ⢩⢢          ⠑⠄      ││  ▌ SL   44-41             The Ballpark at Ame… ┃ 
+ │    ⢀⠎⡌● EUG    ⢀⠌ ⡔⠁     ⠩⡄ ⡠⢐⠅⠄⠄⠄⠤⠠⠠⠄⠄⠄⠤⠄⠄⠴          ⠑⢄  ⠢      . STP        ⠱      ││  ▌ IND   2  ▼ 3rd       ◇   ●○          477 mi ┃ 
+ │    ⡎⡨         ⢀⠊  ⠍       ⢸⠊⠉⠉⡃            ⠨            ⠑⢄⠨       ⢀⢀⡙⡆         ⠣     ││  ▌ OMA   2             ◇ ◆  2-1    Werner Park ┃ 
+ │    ⣧⢁         ⡊  ⠠⠁     ⢀⠔⠁  ⠠⠂            ⠨              ⢛⡂⠂⠂⠊⠈⠈⠈   ⢹⢀⢀⣀⢀⠠⠠⠄  ⠈⠆⢀⢀⢀⠠││  ▌ IND   6  Final                       477 mi ┃ 
+ │   ⢸⡍ ⠈⠈⠈⠐⠐⠠⠠⠠⣘⢀⢀⢀⠨     ⢀⠔    ⠨      ⣀⠄ 250 mi ⠔⢔⠂⠒⠐⠂⠂⠒⠐⠂⠖⠂⢴⡵          ⢋⠓⡂    ○ CHC ⠅ ││  ▌ OMA   0                         Werner Park ┃ 
+ │  ⢀⢮⠂       ⠅⢀⠃   ⠈⠉⠈⠐⠐⠐⣔⠂⠢⠠⠠⠠⠨    ⡠⠊       ⢐    ⠑⢄         ⠸⠧         ⣸⡚     ⠐⡀ ⠈⡂ ⠨ ││  ▌ SUG  40-45  Postponed                505 mi ┃ 
+ │  ⠈⢶       ⠠⠁⢨         ⢰⡂     ⠨   ⡌     ⡠⠤⠖⠒⢴⣄⡀    ⢑         ● OMA ×2 ⣀⡸⡅      ⠅  ⡅ ⠈⡄││  ▌ OKC  46-39             Chickasaw Bricktown… ┃ 
+ │   ⡎       ⡘ ⡅         ⠆⡂   ○ SL ⡩⠩⠉⠈⠉⡨⠋⠂⢒⣐⣂⡒⠂⠙⣇⠁⠅  ⢃        ⠈⢳⠊⠈⠈⠈⠈   ⡃⢨      ⠱  ⢡  ⣔││  ▌ SAC   6  Final                       558 mi ┃ 
+ │   ⡻⡀  ● ATH ⠆         ⢇⠂        ⡅⠌  ⢠⠇ ⢰⠋◆ Denver  Coors Field ⡃      ⠈⠲⣆⡀    ⢨⠆ ⠰⢀⡜⠁││  ▌ ELP   8             Southwest University P… ┃ 
+ │   ⡅⠑⡄     ⠈⠠⠇         ⣓         ⡆⠅  ⠈⡆ ⠘⣄ ⌂⣠⠃ ⢰⠁⡂  ⠸         ⠸ ⠁○ KC   ⠸ ⢜    ⣌⡠⡰⠼⠑  ││  ▌ PHI  50-39  8:10 PM                  563 mi ┃ 
+ │   ⢅ ⡇● SAN  ⡃⢄        ⢕         ⢢⠅   ⠙⢄  ⠉⠉  ⡠⠋ ⡅  ⠜         ⢘  ⠅      ⢘  ⠁⢢⢀⣠⠛  ⡘   ││  ▌ KC   35-54                 Kauffman Stadium ┃ 
+ │   ⠰ ⢸⡀      ⢘ ⠂⡀      ⡪⡀         ⢧     ⠉⠒⠒⠒⠒⠋   ⡂⢀⠔⠁         ⡃  ⠡      ⡃   NAS ×2 ●⠉⠈││  ▌ MIL  54-33  9:40 PM                  585 mi ┃ 
+ │   ⠘⠄ ⢣      ⠈⡄ ⠈⠠⡀    ⠆⢣⠒⠐⠐⠐⠠⠤⠠⠠⠠⠥⠱⢤⠠⠄⠄⠄⣀⢀⢀⢀⠠⠄⠄⢄⡦⠢⠠⠠⠠⠄⠤⠠⠐⠐⠐⠐⡘⠐⠈⠈⠸⠠⠠⠄⠄⠒⢰⠑⠊⠈⡜⢼    ⢀⠅   ││  ▌ AZ   44-44                      Chase Field ┃ 
+ │    ⢃  ⢣      ⢡   ⠐⢀ ⢔⠶⠃ ⢅        ⠅  ⠈⠒⠄⢄⡀⣀⢀⡀⣀⠄⡗⠑⠐⠒⠐⠂⠒⠄     ⡐⠁    ⠅    ⡌    ● MEM ⠄⠄⠂⠂││  ▌ DET   3  Final                       653 mi ┃ 
+ │    ⠘⡀ ⠸⣄⣀     ⢅    ⠐⡸    ⢃      ⠠⠁            ⡂      ⠅   ⢀! OKC  ⠨   ⡨    ⡰⠁⠁  ⢘⠆    ││  ▌ TEX   0                    Globe Life Field ┃ 
+ │     ⢑   ⠈⠑⠤. LAD    ⠱⡀    ⠑⢄    ⠨             ⡂      ⡅  ⡠⠂       ⠸  ⡠⠁   ⢰⠁    ⡔⡂    ││  ▌ BUF   5  Final                       706 mi ┃ 
+ │      ⢃     ⠉! LAA   ⡃       ⠑⢄  ⠨             ⢂      ⢈⡩⠚⠐⠐⠤⢄⢄⠤⠤⠐⠒⠬⡠⡔⠁    ⢃    ⡰ ⡂    ││  ▌ STP   6                           CHS Field ┃ 
+ │      ⠈⡂      ⢹⣀⡀ ⠣⡀⠸⡀    ○ AZ ⠉⠐⢜⡀            ⢘   ⢀⠤⠐⠁           ⢀⠜⡓⠂⠒⠈⠈⠈⠘⣄  ⡠⠂ ⡂    ││  ▌ ABQ  44-42  8:05 PM                  760 mi │ 
+ │       ⠈⠆      ⡇⠈⠉⠉⠙⢟⠤⣀          ⢐ ⠉⠂⠢⠄⢄⢀⡀⣀⡀⣀⢀⡠⢰⠄⠒⠁⠁         . TEX  ⢂     ⢠⠃ ⡠⠂  ⢑   ⡀││  ▌ RR   38-48                     Dell Diamond │ 
+ │        ⠈⢢     ⠸⡀  ⢠⠒⠵⢄⠉⠑⠢⣄⡀     ⢐ ⣀⣀⣀⣀. ELP ⠤⠠⠰               ⡠⠊   ⠈⢆    ⡒⡀⡴⠅⢤  ⠐⡀⠘⡅⣀││  ▌ BOS  39-48  Postponed                822 mi │ 
+ │          ⠡⡀    ⢣  ⢸   ⢱⢄⡀ ⠈⠑⠒⠒⠒⠒⠒⠒⠃   ⠈⠢⡄                  ⢀⡠⠊      ⠰⠁   ⢀⠎  ⠈⢦⡒⠉⠉⠉⠉ ││  ▌ LAA  36-54                    Angel Stadium │ 
+ │           ⠈⢆   ⠈⡆ ⠸⡄  ⠘⡆⠈⠐⢄⡀            ⠈⠒⡄             ⢀⡠⠂○ RR     ⣸⣀⣀⣀⣠⡦⣀   ⣀⣇     ││  ▌ SD    0  Final                       829 mi │ 
+ ╰ ● Live  ○ Upcoming  . Final  ◆ Selected  ⌂ You  ! Delayed/PPD ───── +12 beyond view ─╯│  ▌ LAD   3             UNIQLO Field at Dodger… │ 
+ ╭─ AT THE BALLPARK ──────────────────────────────────────────────────── ● LIVE  ▲ 4th ─╮│  ▌ CLT   4  ▲ 4th       ◇   ●○          878 mi │ 
+ │ Coors Field  Denver  ·  1 mi away                                                    ││  ▌ MEM   5             ◇ ◆  2-1  AutoZone Park │ 
+ │                                                                                      ││  ▌ TB   52-34  Postponed                879 mi │ 
+ │                               1  2  3  4  5  6  7  8  9    R  H  E      ◇     B ●●○  ││  ▌ HOU  44-47                      Daikin Park │ 
+ │ ▌ SF   San Francisco Giants   4  0  0  0  ·  ·  ·  ·  ·   4  8  0     ◇   ◆   S ●○   ││  ▌ MIA   2  ▼ 3rd       ◇   ●○          888 mi │ 
+ │ ▌ COL  Colorado Rockies       5  0  0  0  ·  ·  ·  ·  ·   5  8  0       ▽     O ●○   ││  ▌ ATH   2             ◇ ◆  2-1  Sutter Healt… │ 
+ │                                                                                      ││  ▌ STL  47-39  8:08 PM                  917 mi │ 
+ │ Starters  Robbie Ray / Sean Sullivan                                                 ││  ▌ CHC  49-40                    Wrigley Field │ 
+ │ Started 8:10 PM  ·  NBCS BA / Rockies.TV                                             ││  ▌ FRE   0  ▼ 3rd       ◇   ●○          926 mi │ 
+ │                                                                                      ││  ▌ SAN   2  Game 1     ◇ ◆  2-1  Excite Ballp… │ 
+ ╰──────────────────────────────────────────────────────────────────────────────────────╯╰─ 1-18 of 33 ─ / search ────────────────────────╯ 
+  ↑↓ Game  ←→ Day  / Search  f Follow  l League  Enter Details  ? Help  q Quit                   ● DEMO · Illustrative schedules and scores 

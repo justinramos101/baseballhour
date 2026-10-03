@@ -48,8 +48,12 @@ fn main() -> anyhow::Result<()> {
     app.demo = true;
     app.now = Utc.with_ymd_and_hms(2026, 7, 4, 23, 10, 0).unwrap();
     app.accept(data::demo(query), DataState::Fresh);
+    // A representative animation frame: the ballpark ping mid-expansion.
+    app.tick = 6;
     save(&app, &directory, "atlas", (140, 42))?;
     save(&app, &directory, "compact", (80, 24))?;
+    app.input = Input::Details;
+    save(&app, &directory, "details", (140, 42))?;
     app.input = Input::Help;
     save(&app, &directory, "help", (80, 24))?;
     app.input = Input::Normal;
@@ -66,7 +70,7 @@ fn main() -> anyhow::Result<()> {
     save(&app, &directory, "nearby", (140, 42))?;
     save(&app, &directory, "nearby-compact", (80, 24))?;
     println!(
-        "Captured All games, Following, Nearby, compact layouts, and help in {}",
+        "Captured All games, Following, Nearby, compact layouts, game details, and help in {}",
         directory.display()
     );
     Ok(())

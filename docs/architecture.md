@@ -22,6 +22,10 @@ flowchart LR
 5. `ui.rs` derives the visible list, map, details, and status line from `App` state.
 6. Ratatui writes the buffer to the interactive terminal. `render.rs` writes the same buffer as plain text, ANSI text, or SVG.
 
+The interactive loop advances `App::tick` about ten times a second while something on screen moves: the selected ballpark's ping, live markers, the loading spinner, and score-change highlights. Exports and `--once` frames render tick zero, so captures stay deterministic.
+
+The interface is drawn in 24-bit color. When the terminal lacks truecolor, `ui::quantize` maps each frame to the xterm 256-color palette before it is written. `--ascii` replaces every remaining non-ASCII glyph in the finished frame.
+
 The worker handles one request at a time and coalesces queued requests to the newest one. Date and league changes wait 160 milliseconds before dispatch, which limits requests during repeated navigation. A live interactive session requests a refresh 30 seconds after the previous request started, once that request is complete.
 
 ## Core data
@@ -42,8 +46,9 @@ Preferences contain followed team IDs and one explicit nearby place. Normal sess
 | `src/data.rs` | HTTPS requests, response parsing, cache reads and writes, and synthetic demo data |
 | `src/app.rs` | Views, selection, keyboard actions, sorting, place resolution, and preferences |
 | `src/ui.rs` | Responsive layouts, shared styles, navigation, and status text |
-| `src/ui/atlas.rs` | Geography, venue markers, map labels, and the legend |
-| `src/ui/games.rs` | Schedule rows and game details |
+| `src/ui/atlas.rs` | Albers and azimuthal equidistant projections, land shading, braille linework, range rings, venue markers, label placement, and the legend |
+| `src/ui/games.rs` | Slate sections, scoreboard cards, the scorebug, and the game details view |
+| `src/ui/teams.rs` | MLB club colors for team chips |
 | `src/ui/overlay.rs` | Dialogs and responsive help |
 | `src/storage.rs` | Atomic file replacement for cache entries and preferences |
 | `src/render.rs` | Capture of Ratatui buffers and plain, ANSI, or SVG output |
