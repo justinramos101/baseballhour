@@ -128,7 +128,7 @@ class Session:
              "--config-dir", str(directory / name / "config"),
              "--cache-dir", str(directory / name / "cache")],
             stdin=self.slave, stdout=self.slave, stderr=self.slave,
-            env=env, start_new_session=True,
+            env=env, process_group=0,
         )
 
     def resize(self, columns, rows, notify=True):
