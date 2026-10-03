@@ -6,7 +6,9 @@ Baseball Hour starts in an interactive terminal and opens today's MLB schedule.
 baseballhour
 ```
 
-Use a UTF-8 terminal with color support. The full atlas works best at 110 by 28 cells or larger. An 80 by 24 terminal keeps the map, slate, and a compact game summary. Smaller terminals prioritize the schedule.
+Use a UTF-8 terminal with color support. The full atlas works best at 110 by 28 cells or larger. A terminal 72 columns wide keeps the map and slate; with 30 or more rows it adds the full scorebug, and with fewer it shows a two-line summary with the score, bases, and outs. Smaller terminals prioritize the schedule.
+
+Baseball Hour draws in 24-bit color when the terminal advertises it through `COLORTERM`, or is a terminal known to support it. Otherwise it maps colors to the 256-color palette. Use `--color` to override the detection.
 
 ## Views
 
@@ -16,7 +18,7 @@ Use a UTF-8 terminal with color support. The full atlas works best at 110 by 28 
 | Following | Games that involve a saved team | The same state and time order as All games |
 | Nearby | Games with known venue coordinates | Straight-line distance, then start time |
 
-One selection controls the slate, map marker, and game details. Following matches either team in a game. Nearby excludes games without venue coordinates and reports the number excluded. Those games remain in All games and Following.
+One selection controls the slate, map marker, and game details. The atlas shows the contiguous United States. Nearby redraws it around your place with rings at true straight-line distances. A slate with games outside North America switches to a wider view centered on its ballparks. Following matches either team in a game. Nearby excludes games without venue coordinates and reports the number excluded. Those games remain in All games and Following.
 
 ## Keyboard controls
 
@@ -48,7 +50,7 @@ The league menu contains MLB, MLB plus MiLB, Triple-A, Double-A, High-A, and Sin
 
 ## Nearby places
 
-The place dialog accepts one of the built-in cities, a unique city or ballpark from the loaded slate, or coordinates in `latitude,longitude` form. Coordinates must fall within valid latitude and longitude bounds.
+The place dialog accepts one of the built-in cities, a unique city or ballpark from the loaded slate, or coordinates in `latitude,longitude` form. Coordinates must fall within valid latitude and longitude bounds. A place given as coordinates is shown with hemispheres, such as `39.8°N 105.0°W`.
 
 ```text
 Denver
@@ -75,7 +77,8 @@ Distances use the great-circle distance between coordinates. They are straight-l
 | `--size` | `WIDTHxHEIGHT` | Set the `--once` frame size. The default is `140x42` and the maximum is `500x200` |
 | `--format` | `plain`, `ansi`, or `svg` | Set the `--once` output format. With no explicit format, output is ANSI on a terminal and plain text when redirected |
 | `--json` | None | Print the filtered normalized schedule as JSON and exit |
-| `--ascii` | None | Use plain map markers in place of braille markers |
+| `--ascii` | None | Draw with ASCII characters only |
+| `--color` | `auto`, `truecolor`, or `256` | Choose the color depth. The default detects 24-bit support |
 | `--cache-dir` | Directory | Override the schedule cache directory |
 | `--config-dir` | Directory | Override the preferences directory |
 

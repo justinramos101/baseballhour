@@ -1,4 +1,8 @@
-use std::{collections::BTreeSet, fs, path::Path};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::Path,
+};
 
 use chrono::{DateTime, FixedOffset, Local, NaiveDate, Utc};
 use chrono_tz::Tz;
@@ -6,7 +10,9 @@ use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    model::{Coordinates, Game, League, Place, Query, Snapshot, parse_date, shift_date},
+    model::{
+        Coordinates, Game, GameStatus, League, Place, Query, Snapshot, parse_date, shift_date,
+    },
     storage,
 };
 
@@ -90,6 +96,10 @@ pub struct App {
     pub demo: bool,
     pub ascii: bool,
     pub message: Option<String>,
+    /// Animation frame counter. The interactive loop advances it about ten times a second.
+    pub tick: u64,
+    /// Games whose score changed in the latest refresh, with the tick it arrived.
+    pub scored: BTreeMap<u64, u64>,
 }
 
 impl App {
@@ -109,6 +119,8 @@ impl App {
             demo: false,
             ascii: false,
             message: None,
+            tick: 0,
+            scored: BTreeMap::new(),
         }
     }
 
@@ -196,6 +208,21 @@ impl App {
     pub fn accept(&mut self, snapshot: Snapshot, state: DataState) -> bool {
         if snapshot.query != self.query {
             return false;
+        }
+        if let Some(previous) = self.snapshot.as_ref().filter(|s| s.query == snapshot.query) {
+            for game in &snapshot.games {
+                let before = previous.games.iter().find(|g| g.id == game.id);
+                if let Some(before) = before
+                    && before.status != GameStatus::Scheduled
+                    && before.away.score.is_some()
+                    && before.home.score.is_some()
+                    && (before.away.score, before.home.score) != (game.away.score, game.home.score)
+                {
+                    self.scored.insert(game.id, self.tick);
+                }
+            }
+        } else {
+            self.scored.clear();
         }
         self.snapshot = Some(snapshot);
         self.state = state;
@@ -525,7 +552,21 @@ pub fn resolve_place(input: &str, games: &[Game]) -> Result<Place, String> {
             .and_then(|(lat, lon)| Coordinates::new(lat, lon));
         return coordinates
             .map(|coordinates| Place {
-                name: format!("{:.2}, {:.2}", coordinates.latitude, coordinates.longitude),
+                name: format!(
+                    "{:.1}°{} {:.1}°{}",
+                    coordinates.latitude.abs(),
+                    if coordinates.latitude >= 0.0 {
+                        'N'
+                    } else {
+                        'S'
+                    },
+                    coordinates.longitude.abs(),
+                    if coordinates.longitude >= 0.0 {
+                        'E'
+                    } else {
+                        'W'
+                    }
+                ),
                 coordinates,
             })
             .ok_or_else(|| "Use latitude,longitude within -90..90 and -180..180.".into());

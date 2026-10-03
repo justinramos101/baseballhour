@@ -58,6 +58,13 @@ Press `l` to choose MLB, one of the four full-season affiliated MiLB levels, or 
 
 </details>
 
+<details>
+<summary>See the game details view</summary>
+
+![Baseball Hour game details with the linescore, count, and a locator map](docs/screenshots/details.svg)
+
+</details>
+
 ```sh
 baseballhour --league all --near Denver
 baseballhour --team Mariners --timezone America/Denver

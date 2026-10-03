@@ -5,6 +5,7 @@ use baseballhour::{
     render::{self, Format},
 };
 use chrono::NaiveDate;
+use ratatui::style::Color;
 
 fn app() -> App {
     let query = Query {
@@ -52,7 +53,7 @@ fn layouts_keep_schedule_and_exit_controls_readable() {
     }
     assert!(plain(&app, 30, 8).contains("Resize to at least"));
     let smallest = plain(&app, 40, 12);
-    assert!(smallest.contains("2026-07-04"));
+    assert!(smallest.contains("SAT, JUL 4"), "{smallest}");
     assert!(smallest.contains("1 All"));
     assert!(smallest.contains("2 Following"));
     assert!(smallest.contains("3 Nearby"));
@@ -67,7 +68,7 @@ fn compact_help_keeps_close_and_quit_controls_visible() {
     let mut app = app();
     app.input = Input::Help;
     let screen = plain(&app, 40, 12);
-    assert!(screen.contains("Esc Close · q Quit"));
+    assert!(screen.contains("Esc Close · q Quit"), "{screen}");
     assert!(screen.contains("1/2/3 Views"));
 }
 
@@ -99,7 +100,7 @@ fn nearby_shows_numeric_miles_in_compact_terminal() {
     app.normalize_selection();
     let screen = plain(&app, 80, 24);
     assert!(screen.contains("NEAR Denver"));
-    assert!(screen.contains("1mi"));
+    assert!(screen.contains("1 mi"), "{screen}");
     assert!(screen.contains("Coors Field"));
 }
 
@@ -114,9 +115,13 @@ fn postponed_games_show_a_matchup_and_alert_legend() {
         .id;
     app.selected = Some(selected);
     let screen = plain(&app, 140, 42);
-    assert!(screen.contains("Postponed"));
-    assert!(screen.contains("TB at HOU"));
-    assert!(screen.contains("! Status alert"));
+    let lines: Vec<&str> = screen.lines().collect();
+    let card = lines
+        .iter()
+        .position(|line| line.contains(" TB ") && line.contains("Postponed"))
+        .expect("postponed card");
+    assert!(lines[card + 1].contains(" HOU "), "{}", lines[card + 1]);
+    assert!(screen.contains("! Delayed/PPD"), "{screen}");
 }
 
 #[test]
@@ -169,7 +174,7 @@ fn empty_error_and_following_views_explain_recovery() {
     assert!(screen.contains("Press r to retry"));
     app.input = Input::Help;
     let help = plain(&app, 80, 24);
-    assert!(help.contains("Keyboard guide"));
+    assert!(help.contains("KEYBOARD GUIDE"), "{help}");
     assert!(help.contains("Esc Close · q Quit"));
     assert!(help.contains("Nearby: straight-line miles"));
 }
@@ -209,7 +214,146 @@ fn historical_slates_do_not_use_todays_dst_abbreviation() {
     app.now = "2026-10-02T12:00:00Z".parse().unwrap();
     app.selected = Some(823_526);
     let screen = plain(&app, 140, 42);
-    assert!(screen.contains("Pacific/Auckland"));
+    assert!(screen.contains("Auckland"), "{screen}");
     assert!(screen.contains("5:35 AM +1d"));
     assert!(!screen.contains("NZDT"));
+}
+
+#[test]
+fn ascii_mode_writes_only_ascii_in_every_layout() {
+    let mut app = app();
+    app.ascii = true;
+    for (width, height) in [(140, 42), (100, 30), (80, 24), (40, 12)] {
+        let screen = plain(&app, width, height);
+        let stray: String = screen.chars().filter(|c| !c.is_ascii()).collect();
+        assert!(stray.is_empty(), "{width}x{height}: {stray}");
+    }
+    app.input = Input::Help;
+    assert!(plain(&app, 80, 24).is_ascii());
+}
+
+#[test]
+fn map_labels_never_touch_a_marker() {
+    let mut app = app();
+    for (width, height) in [
+        (200, 56),
+        (140, 42),
+        (120, 32),
+        (110, 28),
+        (100, 30),
+        (80, 24),
+    ] {
+        for selected in app.games().iter().map(|g| g.id).collect::<Vec<_>>() {
+            app.selected = Some(selected);
+            let screen = plain(&app, width, height);
+            for line in screen.lines() {
+                let chars: Vec<char> = line.chars().collect();
+                for (i, pair) in chars.windows(2).enumerate() {
+                    let marker = |c: char| matches!(c, '●' | '○' | '◆');
+                    let touching = (marker(pair[0]) && pair[1].is_ascii_alphabetic())
+                        || (pair[0].is_ascii_alphabetic() && marker(pair[1]));
+                    assert!(!touching, "{width}x{height} col {i}: {line}");
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn quantize_maps_truecolor_to_the_256_color_palette() {
+    let mut buffer = render::capture(&app(), 80, 24);
+    baseballhour::ui::quantize(&mut buffer);
+    assert!(
+        buffer
+            .content
+            .iter()
+            .all(|cell| !matches!(cell.fg, Color::Rgb(..)) && !matches!(cell.bg, Color::Rgb(..)))
+    );
+}
+
+#[test]
+fn one_shot_ansi_output_honors_the_color_depth() {
+    let binary = env!("CARGO_BIN_EXE_baseballhour");
+    let frame = |depth: &str| {
+        let output = std::process::Command::new(binary)
+            .args(["--demo", "--once", "--size", "40x12", "--format", "ansi"])
+            .args(["--color", depth])
+            .output()
+            .unwrap();
+        assert!(output.status.success());
+        String::from_utf8(output.stdout).unwrap()
+    };
+    let indexed = frame("256");
+    assert!(indexed.contains("38;5;") && !indexed.contains("38;2;"));
+    assert!(frame("truecolor").contains("38;2;"));
+}
+
+#[test]
+fn demo_day_follows_the_displayed_timezone() {
+    let binary = env!("CARGO_BIN_EXE_baseballhour");
+    for zone in ["Asia/Tokyo", "Pacific/Auckland", "America/Los_Angeles"] {
+        let output = std::process::Command::new(binary)
+            .args(["--demo", "--once", "--format", "plain", "--timezone", zone])
+            .output()
+            .unwrap();
+        let screen = String::from_utf8(output.stdout).unwrap();
+        let header = screen.lines().next().unwrap_or_default();
+        assert!(header.contains("TODAY"), "{zone}: {header}");
+        assert!(screen.contains("LIVE NOW"), "{zone}");
+    }
+}
+
+#[test]
+fn slate_scrollbar_reaches_the_end_at_the_last_game() {
+    let mut app = app();
+    let last = app.visible_games().last().unwrap().id;
+    app.selected = Some(last);
+    // At this height the slate overflows by a single row: two scroll offsets.
+    let screen = plain(&app, 120, 38);
+    let lines: Vec<&str> = screen.lines().collect();
+    let bottom = lines
+        .iter()
+        .position(|line| line.contains(" of 15 "))
+        .expect("scrolled slate");
+    let top = lines
+        .iter()
+        .position(|line| line.contains("THE SLATE"))
+        .unwrap();
+    // The thumb has moved off the first track row and reaches the last one.
+    assert!(lines[top + 1].trim_end().ends_with('│'), "{screen}");
+    assert!(lines[bottom - 1].trim_end().ends_with('┃'), "{screen}");
+}
+
+#[test]
+fn text_inputs_keep_animating_without_a_selection() {
+    let mut app = app();
+    app.search = "no such team".into();
+    app.normalize_selection();
+    assert!(app.selected.is_none());
+    app.snapshot
+        .as_mut()
+        .unwrap()
+        .games
+        .retain(|g| g.status != GameStatus::Live);
+    app.input = Input::Search;
+    assert!(baseballhour::ui::animates(&app));
+    app.input = Input::Normal;
+    assert!(!baseballhour::ui::animates(&app));
+}
+
+#[test]
+fn score_glow_ages_while_its_game_is_hidden() {
+    let mut app = app();
+    app.snapshot
+        .as_mut()
+        .unwrap()
+        .games
+        .retain(|g| g.status != GameStatus::Live);
+    app.search = "no such team".into();
+    app.normalize_selection();
+    app.tick = 100;
+    app.scored.insert(app.games()[0].id, 95);
+    assert!(baseballhour::ui::animates(&app));
+    app.tick = 130;
+    assert!(!baseballhour::ui::animates(&app));
 }

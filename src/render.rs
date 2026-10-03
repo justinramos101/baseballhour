@@ -43,9 +43,12 @@ pub fn write(buffer: &Buffer, format: Format, out: &mut impl Write) -> io::Resul
         while x < buffer.area.right() {
             let cell = &buffer[(x, y)];
             if matches!(format, Format::Ansi) {
-                let (r, g, b) = rgb(cell.fg, true);
-                let (br, bg, bb) = rgb(cell.bg, false);
-                write!(out, "\x1b[0;38;2;{r};{g};{b};48;2;{br};{bg};{bb}m")?;
+                write!(
+                    out,
+                    "\x1b[0;{};{}m",
+                    sgr(cell.fg, true),
+                    sgr(cell.bg, false)
+                )?;
                 if cell.modifier.contains(Modifier::BOLD) {
                     write!(out, "\x1b[1m")?;
                 }
@@ -59,6 +62,17 @@ pub fn write(buffer: &Buffer, format: Format, out: &mut impl Write) -> io::Resul
         writeln!(out)?;
     }
     Ok(())
+}
+
+/// The SGR color parameters for a cell: palette indexes stay indexed, and
+/// everything else is written as 24-bit color.
+fn sgr(color: Color, foreground: bool) -> String {
+    let layer = if foreground { 38 } else { 48 };
+    if let Color::Indexed(index) = color {
+        return format!("{layer};5;{index}");
+    }
+    let (r, g, b) = rgb(color, foreground);
+    format!("{layer};2;{r};{g};{b}")
 }
 
 fn rgb(color: Color, foreground: bool) -> (u8, u8, u8) {

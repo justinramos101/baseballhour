@@ -1,7 +1,7 @@
 use std::{fs, io::Read, path::PathBuf, time::Duration};
 
 use anyhow::{Result, anyhow, bail};
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -387,5 +387,42 @@ pub fn demo(query: Query) -> Snapshot {
     snapshot.warnings =
         vec!["Synthetic demonstration. Scores and game states are illustrative.".into()];
     snapshot.query = query;
+    snapshot
+}
+
+/// A synthetic schedule seen from `today`: earlier slates are final and later
+/// slates have not started, so the demo stays coherent as the date changes.
+///
+/// # Panics
+/// Panics if a bundled fixture is invalid.
+#[must_use]
+pub fn demo_from(query: Query, today: NaiveDate) -> Snapshot {
+    let mut snapshot = demo(query);
+    if query.date == today {
+        return snapshot;
+    }
+    for game in &mut snapshot.games {
+        if matches!(game.status, GameStatus::Postponed | GameStatus::Cancelled) {
+            continue;
+        }
+        if query.date < today {
+            if game.status != GameStatus::Final {
+                // An illustrative final, stable for each game.
+                let seed = u16::try_from(game.id % 49).unwrap_or(0);
+                let (away, home) = (seed % 7, seed / 7);
+                game.away.score = Some(away);
+                game.home.score = Some(if home == away { home + 1 } else { home });
+                game.linescore = None;
+            }
+            game.status = GameStatus::Final;
+            game.status_text = "Final".into();
+        } else {
+            game.status = GameStatus::Scheduled;
+            game.status_text = "Scheduled".into();
+            game.away.score = None;
+            game.home.score = None;
+            game.linescore = None;
+        }
+    }
     snapshot
 }

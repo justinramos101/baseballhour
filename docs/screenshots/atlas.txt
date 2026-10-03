@@ -1,42 +1,42 @@
-  ◇ BASEBALL HOUR  DEMO                                                                                         Sat, Jul 4, 2026   [g] date 
-     Every game has a place.                                                                                               America/New_York 
-                                                                                                                                            
-   1 All games   2 Following   3 Nearby                                                                                             l MLB   
-                                                                                                                                            
- ╭ BALLPARK ATLAS ────────────────────────────────────────────────────────────────────────╮╭ THE SLATE  15 games ─────────────────────────╮ 
- │ ⣣⣀⡀⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⠈⠑⠢⠜⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇ ││›  PIT  0  WSH  2                   Bottom 3  │ 
- │ ⠒⠻⢍⡙⠶⣤⢄⡀⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⢀⣿⣿⢸⣿⣿⣿⣿⣀⣀⣀⡀⢀⡀⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⢀⣀⠤⣊⣉⣉ ││   Washington · Nationals Park                │ 
- │    ⠉⠱⡚⠦⣫⠉⠉⠉⠉⠉⠉⠉⡏⢫⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹⠉⠉⠉⠉⠉⠉⠉⣿⢸⣇⠈⠉⠈⠉⠑⠒⠤⠔⠢⠤⠔⠒⠤⣀⡀⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⡿⣠⠗⠊⠉⣿⣿⢠ ││   TOR  3  SEA  5                      Top 6  │ 
- │      ⢱⢄⡈●⡇SEA⣀⣀⣇⢸⠉⢲⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇⣿⣿⣿⢸⣀⣀⣀⣀⣀⣀⣀⣀⣀⣸⣿⣿⣿⣿⡇⣰⠂⣿⠤⠤⢄⡀⣿⣿⠈⠑⠤⣀⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⠒⢻⠁⠉⢹⣿⣿⣿⡇ ││   Seattle · T-Mobile Park                    │ 
- │      ⢸⣿⠉⠉⠉⠉⣿⣿⣿⢀⡜⢸⣿⠈⠙⢤⣀⣠⡖⠒⠒⠒⠒⠒⠒⠒⠒⢺⣿⣿⢸⣿⣿⣿⣿⣿⢸⠸⡀⣿⣿⣿⠈⣇⡀⣿⣿⣿⣿⠘⠂⣿⣿⣿⣿⢸⠱⡀⣿⣿⣿⡇⣿⣿⣿⢀⡠⠤⠔⡖⠒⣲⢲⠁⢸⣿⣈⡱⠖⡲⠖ ││   CWS  1  CLE  2                   Bottom 5  │ 
- │     ⢀⠇⣿⣿⣿⡇⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⢸⡇⣿⣿⣿⣿⡇⣿⣿⣿⢸⣀⣀⣀⣀⣀⣀⣀⣀⣀⣰⠗⠒⠒⠒⠒⠒⠚⣇⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⡇⣿⣿⣿⣰⠒⠒⠒⠁⣿⣿⢸⢳⣰⣁⣸⠔⠊⠉   ⠓⠒ ││   Cleveland · Progressive Field              │ 
- │     ⠈⡖⠒⠒⠒⠒⠒⡖⠒⠒⠒⠓⠒⠒⠒⡖⠒⠒⠒⣇⣀⣀⣀⣀⣀⣀⣀⣀⣸⣀⣀⡀⣿⣿⣿⣿⣿⢸⠈⢣⣿⣿⣿⡇⣿⣿⣬⠟⠉⠉○⡄CHC⠤⠤⠫●⠊CLE⠒⠒⠒⠒⠒⣄⣀⣞⣒⣲⠮⠶⠆       ││    SF  4  COL  5                      Top 4  │ 
- │      ⢇⣿⣿⣿⡇⣿⡇⣿⣿⣿⣿⢸⣿⣿⡇⣿⣿⢸⣿⣿⢸⣿⣿⡇⣿⣿●⣿COL⠤⠤⠤⠤⠤⠤⠤⠼⢶⡖⠒⠒⠊⠱⡁⣿⣿⣿⢸⡇⣿⣿⢸⣿⢸⣿⣿⢀⣾⣀⣀⣀⣠⠤⣄⣼⠧○⠉NYY         ││   Denver · Coors Field                       │ 
- │      ⠈⠢⡀⣿●⣿ATH⣿⣿⢸⣿⣿⡇⣿⣿⢸⣿⣿⢸⣿⣿⡇⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⢸⣿⣿⣿○⣿KC⣿⠘⢶⣿⣿⣠⣃⣀⡤⠞○⠲CIN⣿⣠⠵⠘⣇◆⣸WSH             ││   MIA  2  ATH  2                   Bottom 3  │ 
- │        ⠘⡄⡇⣿⣿⣿⠈⠒⠤⡀⣿⣿⡧⠔⠒⠒⠒⠒⢼⠤⠤⠤⠤⠤⠤⠤⠤⣤⣧⣤⣤⡤⠤⠤⠤⠤⠤⠤⢼⣀⣀⣀⣀⣀⣀⣻⣖⡭⠬⠤⢄⠤⣀⣠⣴⣛⣒⣋⣁⣀⣀⣀⠉⣷⡁               ││   Sacramento · Sutter Health Park            │ 
- │         ⠈⠒⡄⣿⣿⣿⣿⣿⠈⠑⣏⠁⣿⣿⢸⣿⣿⢸⣿⣿⡇⣿⣿⣿⣿⣿⡇⢸⣿⣿⡇⣿⣿⢸⣿⣿⣿⢸⣿⡇⣿⣿⣿⡽⠧⢄⣀⣀⣀⣀⣀⣠⣒⡯⠭⠤⣄⣀⡇⣿⣿⢀⡠⠃               ││   MIN at NYY                        1:35 PM  │ 
- │          LAD⠒·!⣿LAA⠁⣿○⢸AZ⢸⣿⣿⡇⣿⣿⣿⣿⣿⡇⢸⣿⣿⠉⠑⠒⠒⠦⠖⠒⠺⣄⣀⣀⣀⡎⠁⣿⣿⡇⣿⣿⠈⡆·⢸ATL⣿⣿⡩⠒⠊⠁                 ││   Bronx · Yankee Stadium                     │ 
- │               ⠈⢖⠉⠉⣛⣢⠤⣀⡀⣿⣿⢸⣿⣀⣀⡤⠤⠤⠤⠤⠇⢸⣿⣿⣿⣿⣿⢸·⣿TEX⡇⣿⢀⠗⣿⣿⢰⠁⣿⣿⣿⣱⣿⢸⣿⣿⢹⠔⠉                     ││   BAL at CIN                        7:10 PM  │ 
- │                ⠈⢆⠈⡆ ⢇⣿⠈⠉⠉⠉⠉⠁⡇⠈⠉⢆⣿⣿⣿⢸⣿⣿⣿⣿⣿⢸⣿⣿!⣿HOU⠈⠉⠉⣧⠼⠤⠶⠶⢖⠛⣒⡒⠢⠴⢎                       ││   Cincinnati · Great American Ball Park      │ 
- │                  ⠑⠬⡑⣄⠱⣀⣿⣿⣿⣿⣿⡇⣿⣿⣿⠑⠢⠜⠉⠑⢢⣿⣿⣿⢸⢀⡠⠔⠉⠉⠉⠉⠉⠑⠒⠚     ⠉ ⠈⢆⣿⠈⢆                      ││   STL at CHC                        8:08 PM  │ 
- │                  ⠐⠪⣀⡘⠢⡀⠙⢄⡀⣿⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⠱⡀⣿⢠⠃                  ⠸⡀⣿⠘⡄⢀⣀⣄                  ││   Chicago · Wrigley Field                    │ 
- │                     ⠈⢱⠱⡀ ⠪⢄⣿⡇⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⠈⠑⢚⠆                   ⠈⢢⣀⠇⠈⢉⡑⠃                 ││   PHI at KC                         8:10 PM  │ 
- │                      ⠈⠒⠼⣢  ⠑⢄⢿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡎                         ⠘⣷                  ││   Kansas City · Kauffman Stadium             │ 
- │                         ⠑⠁   ⠉⢢⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡇                ⢀⢤⣒⠞⢟⣉⣉⠑⠤⠤⢄                  ││   MIL at AZ                         9:40 PM  │ 
- │  ● Live   ○ Upcoming   · Final   ◆ Selected   ! Status alert                           ││   Phoenix · Chase Field                      │ 
- │  Select a game to find its ballpark.                                                   ││   DET  3  TEX  0                      Final  │ 
- ╰────────────────────────────────────────────────────────────────────────────────────────╯│   Arlington · Globe Life Field               │ 
- ╭ AT THE BALLPARK ───────────────────────────────────────────────────────────────────────╮│   NYM  3  ATL 14                      Final  │ 
- │ PIT  0   @   WSH  2    Bottom 3                                                        ││   Atlanta · Truist Park                      │ 
- │ Nationals Park · Washington                                                            ││    SD  0  LAD  3                      Final  │ 
- │ Pittsburgh Pirates at Washington Nationals                                             ││   Los Angeles · UNIQLO Field at Dodger Stadi…│ 
- │        1  2  3    R  H  E                                                              ││    TB at HOU                      Postponed  │ 
- │ PIT    0  0  0    0  -  -                                                              ││   Houston · Daikin Park                      │ 
- │ WSH    2  0  0    2  -  -                                                              ││   BOS at LAA                      Postponed  │ 
- │ Bases ◇ ◇ ◆  Balls 2 · Strikes 1 · Outs 1                                              ││   Anaheim · Angel Stadium                    │ 
- │ Probables  Braxton Ashcraft / Carson Palmquist                                         ││                                              │ 
- │ First pitch 11:05 AM · SportsNet Pittsburgh / Nationals.TV                             ││ 5 live · 15 games · / search                 │ 
- ╰────────────────────────────────────────────────────────────────────────────────────────╯╰──────────────────────────────────────────────╯ 
- DEMO · Illustrative schedules and scores                                                                                                   
-  ↑↓ Game  ←→ Day  t Today  g Date  / Search  f Follow  p Place  l League  Enter Details  ? Help  q Quit                                    
-                                                                                                                                            
+  ◆ BASEBALL HOUR  DEMO                        ‹ Fri 3    SAT, JUL 4 2026   TODAY     Sun 5 ›                   ● 5 LIVE   7:10 PM New York 
+   1 All games 15    2 Following 0    3 Nearby                                                                                     l  MLB   
+ ╭─ BALLPARK ATLAS ─────────────────────────────────────────────────────────────────────╮╭─ THE SLATE  15 games ──────────────────────────╮ 
+ │          ⡦⣧⡀                                          ⠘⣄  ⢣              ⣀⡠⠤⠔⠊ ⢀⠇   ⢈││ LIVE NOW ────────────────────────────────── 5  │ 
+ │          ⠉⣆⠹⣦                                          ⠈⠦⡀⣸            ⡜⢉⣈⣛⠛⠛  ⠸⣆⠤⠖⠩⠟││▎ ▌ PIT   0  ▼ 3rd       ◇   ●○      Washington │ 
+ │           ⠘⢢⣱⢣⠤⣀⣀                                        ⠈           ⢠⢚⠔⠁ ⡇    ⣄     ││▎ ▌ WSH   2             ◇ ◆  2-1                │ 
+ │            ⢸⠈● SEA ⢒⢒⠢⠤⢤⣀⣀⣀                                          ⣮⣃⢤  ⠘⢼⣖⣲⡶⢉⠏    ││  ▌ TOR   3  ▲ 6th       ◇   ●○   T-Mobile Park │ 
+ │            ⡞⢤⠁     ⡆⢰⡀     ⠉⠉⠉⠉⠒⠒⡒⠒⠒⠒⠤⠤⠤⣤⠤⠼⣆⣀⡀   ⢀                  ⠜⢺ ⠈⡇ ⣀⢤⠄⢁⠔⠁     ││  ▌ SEA   5             ◇ ◆  2-1        Seattle │ 
+ │           ⢰⠃⠈⠊⠒⠒⠒⠠⠴⡀ ⢳           ⡂      ⢸    ⠈⠉⠉⠉⠁⠉⠒⠤⣀              ⢠⠜  ⢈⡝⠠⡃⡰⠁       ││  ▌ CWS   1  ▼ 5th       ◇   ●○       Cleveland │ 
+ │          ⢠⠃      ⢀⡴⠁ ⠛⡇         ⢐⢀⢀⢀⢀⡀⡀⣀⢸⡄   ⣐ ⠐⠆⠤⣄  ⠈⠙⠦⣀       ⡠⠒⠹⡉⢹⠡⢀⠔⠁  ⠉⠁        ││  ▌ CLE   2             ◇ ◆  2-1                │ 
+ │          ⡇⡀⡀     ⢀⠃   ⠘⠂⢚⠈⠈⠁⠑⠐⠐⠐⢘       ⠘⡃   ⣇    ⠘⠂    ⠘⡄   ⣀⣀⠴⠁  ⢣⢣⠠⢿⡀             ││  ▌ SF    4  ▲ 4th       ◇   ●○     Coors Field │ 
+ │         ⡴⠁  ⠁⢁⠒⠠⠠⢔⢀⢀    ⡐       ⢐        ⣃⡀⡀⣀⢈⡑⡆         ⡇  ⡨⠇ ⣀⣀⣀⡀⢐⠐⣲⠿⠞             ││  ▌ COL   5             ◇ ◆  2-1         Denver │ 
+ │         ⡱    ⠔      ⠨⠁⠁⠂⡂       ⡊⠈⠈⠈⠉⠐⠐⠒⠢⡇     ⠳⣤⠤⠄○ CHC ⣠● CLE   ⡟○ NYY             ││  ▌ MIA   2  ▼ 3rd       ◇   ●○      Sacramento │ 
+ │         ⢱ ● ATH     ⠅  ⠈⠈⠐⠔⠒⠠⠄⠄⠄⠥⠠⢀      ⢸     ⢴⠃  ⠨⠁ ⠨    ⢸⠏ ⢀⣔⡲⠶⣞⡸⠈⢧               ││  ▌ ATH   2             ◇ ◆  2-1                │ 
+ │          ⡇   ⠡⢀    ⠠⠁    ⠠⠁   ● COL ⠠⠄⠄⠤⠠⠸⢮⡉⠁⠁⠉⡇   ⢘   ○ CIN ⢘⣿⠘◆ WSH  Nationals Park││ UPCOMING ────────────────────────────────── 5  │ 
+ │          ⢣     ⢂   ⠌     ⠨        ⡂       ⠈○ KC ⢳  ⢨⠂⢀⠔⠋⠑⠚⣎⠈⢆⡎⠉⠓⠤⠝⣿ ⢀⠎               ││  ▌ MIN  43-47  1:35 PM          Yankee Stadium │ 
+ │          ⠈⡆     ⠢ ⣤⠇⠁⠁⠂⠒⠐⠌⠄⠄⠄⣀⢀⣀⢀⢀⣃⡀       ⠅    ⠈⢱⣀⡞⠉⠁ ⢀⡀⣠⡞⣹⠩⠷⠤⣐⣂⣊⣩⡶⠋                ││  ▌ NYY  49-39                            Bronx │ 
+ │          LAD . LAA       ⠅      ⢐⠂⠒⠚⢘⠉⠁⠁⠉⠁⠉⢃⠒⠐⠂⠒⢰⣶⠑⠘⠈⠁⠉⠁⢀⡠⠖⣁⣀⡀⣀  ⢀⡤⠃                 ││  ▌ BAL  42-48  7:10 PM              Cincinnati │ 
+ │             ⠈⢳   ⡰⠁     ⠠⠁      ⠨   ⢨      ⠰    ⢠⠧⠔⠰⠐⠂⠂⡂⠊⠑⠣⡀ ⠁ ⢁⠔⠃                   ││  ▌ CIN  40-48                                  │ 
+ │              ⠘⡏⠉⢑⠧⣀ ○ AZ        ⢘   ⠈⠑⠂⠶⠤⠤⠤⢜⡀  ⢠⠋  ⠸   ⠰. ATL ⡠⠊                     ││  ▌ STL  47-39  8:08 PM           Wrigley Field │ 
+ │               ⢧ ⡎⠓⢢⠑⠢⢄⣀⣀⡂⣄⣀⣠⠠⡀⡀⣀⡂       . TEX ⠉⠁⡇  ⢨    ⡇    ⡹⠁                      ││  ▌ CHC  49-40                          Chicago │ 
+ │               ⠘⣄⢳ ⠸⡀    ⠈⠁ ⠈⠓⡄              ⠹⡀ ⢸⠤⠠⡄⢐ ⡤⠠⠐⠳⠄⠤⠄⠴⢣                       ││  ▌ PHI  50-39  8:10 PM        Kauffman Stadium │ 
+ │                 ⡣⢱⡀⢧         ⠸⡄ ⢠⠤⡀       ! HOU ⡀ ⢳⠉⠉⠉⠉⠉⠢⠊⠙⢤ ⠈⢢⡀                     ││  ▌ KC   35-54                      Kansas City │ 
+ │                ⠻⣁ ⢣ ⠑⡄        ⠈⠙⠁ ⠈⢣    ⢀⣀⠔⠊    ⠉⠉⠉⠁        ⡇  ⠣⡀ ⣀⣀⣀                ││  ▌ MIL  54-33  9:40 PM             Chase Field │ 
+ │                 ⠈⠓⡄⢱ ⠑⢄            ⠈⢢  ⢠⠊                   ⠘⢤  ⡇⠘⠋⠁⠻                ││  ▌ AZ   44-44                          Phoenix │ 
+ │                   ⣏⠘⡄ ⠚⢄             ⠣⢤⣸⡀                     ⠑⠤⠃  ⢏⢆                ││ FINAL ───────────────────────────────────── 3  │ 
+ │                   ⠈⠢⡗⢆  ⠣⡀             ⡸                            ⠋                ││  ▌ DET   3  Final             Globe Life Field │ 
+ │                     ⠸⠜   ⠘⢤            ⡇                   ⣠⢴⠶⣮⣉⣉⠑⠢⠒⠢⢄⣀⣀         ⡀   ││  ▌ TEX   0                           Arlington │ 
+ │  ├─────────┤ 500 mi        ⢇          ⠠⡃               ⡀  ⠼⠛⠁    ⠉⠉⠉⠦⠤⡌⣀⣉⡩⠶ ⠶⡖⠺⡉⠉⢈⣹⣱⠂││  ▌ NYM   3  Final                  Truist Park │ 
+ ╰ ● Live  ○ Upcoming  . Final  ◆ Selected  ! Delayed/PPD ─────────────── 15 ballparks ─╯│  ▌ ATL  14                             Atlanta │ 
+ ╭─ AT THE BALLPARK ──────────────────────────────────────────────────── ● LIVE  ▼ 3rd ─╮│  ▌ SD    0  Final                  Los Angeles │ 
+ │ Nationals Park  Washington                                                           ││  ▌ LAD   3                                     │ 
+ │                                                                                      ││ SCHEDULE CHANGES ────────────────────────── 2  │ 
+ │                               1  2  3  4  5  6  7  8  9    R  H  E      ◇     B ●●○  ││  ▌ TB   52-34  Postponed           Daikin Park │ 
+ │ ▌ PIT  Pittsburgh Pirates     0  0  0  ·  ·  ·  ·  ·  ·   0  4  0     ◇   ◆   S ●○   ││  ▌ HOU  44-47                          Houston │ 
+ │ ▌ WSH  Washington Nationals   2  0  0  ·  ·  ·  ·  ·  ·   2  3  0       ▽     O ●○   ││  ▌ BOS  39-48  Postponed         Angel Stadium │ 
+ │                                                                                      ││  ▌ LAA  36-54                          Anaheim │ 
+ │ Starters  Braxton Ashcraft / Carson Palmquist                                        ││                                                │ 
+ │ Started 11:05 AM  ·  SportsNet Pittsburgh / Nationals.TV                             ││                                                │ 
+ │                                                                                      ││                                                │ 
+ ╰──────────────────────────────────────────────────────────────────────────────────────╯╰─ 5 live · 15 games ─ / search ─────────────────╯ 
+  ↑↓ Game  ←→ Day  / Search  f Follow  l League  Enter Details  ? Help  q Quit                   ● DEMO · Illustrative schedules and scores 

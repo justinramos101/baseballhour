@@ -1,5 +1,5 @@
 use baseballhour::{
-    data::{ScheduleClient, demo, parse_schedule},
+    data::{ScheduleClient, demo, demo_from, parse_schedule},
     model::{GameStatus, League, Query},
 };
 use chrono::{DateTime, Utc};
@@ -315,4 +315,35 @@ fn inning_break_state_takes_priority_over_half() {
         assert_eq!(result.games[0].linescore.as_ref().unwrap().half, state);
         assert_eq!(result.games[0].state_label(), format!("{state} 5"));
     }
+}
+
+#[test]
+fn demo_reads_past_dates_as_final_and_future_dates_as_scheduled() {
+    let today = chrono::NaiveDate::from_ymd_opt(2026, 7, 4).unwrap();
+    let on = |date: &str| Query {
+        date: date.parse().unwrap(),
+        league: League::Mlb,
+    };
+    let current = demo_from(on("2026-07-04"), today);
+    assert!(current.games.iter().any(|g| g.status == GameStatus::Live));
+    let off = |g: &&baseballhour::model::Game| {
+        matches!(g.status, GameStatus::Postponed | GameStatus::Cancelled)
+    };
+    let past = demo_from(on("2026-07-01"), today);
+    assert!(past.games.iter().filter(|g| !off(g)).all(|g| {
+        g.status == GameStatus::Final && g.away.score.is_some() && g.away.score != g.home.score
+    }));
+    let future = demo_from(on("2026-12-25"), today);
+    assert!(future.games.iter().filter(|g| !off(g)).all(|g| {
+        g.status == GameStatus::Scheduled && g.away.score.is_none() && g.linescore.is_none()
+    }));
+    // Every game moves to the requested slate, not just its status.
+    let christmas = on("2026-12-25").date;
+    assert!(future.games.iter().all(|g| {
+        g.official_date == christmas
+            && g.starts_at.is_some_and(|start| {
+                let day = start.date_naive();
+                day == christmas || day == christmas.succ_opt().unwrap()
+            })
+    }));
 }

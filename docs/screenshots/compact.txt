@@ -1,24 +1,24 @@
-  ◇ BASEBALL HOUR  DEMO                             Sat, Jul 4, 2026   [g] date 
-     Every game has a place.                                   America/New_York 
-                                                                                
-   1 All games   2 Following   3 Nearby                                 l MLB   
- ╭ BALLPARK ATLAS ────────────────╮╭ THE SLATE  15 games ─────────────────────╮ 
- │ ⣧⣄⡀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠑⠃⣿⣿⣿⣿⣿⡠ ││›  PIT  0  WSH  2               Bottom 3  │ 
- │ ⠈⠻⣻●⠉⡿⡍⠉⠉⠉⠉⡏⠉⠉⢹⠙⠒⠔⠔⠤⡀⣿⣿⣿⣿⣿⢀⣴⡛⠩ ││   TOR  3  SEA  5                  Top 6  │ 
- │   ⡟⠒⠒⡷⠸⣄⡤⠤⠤⡗⠒⠒⠺⡀⢸⡉⠑⠆⠉⢣⣿⣿⡠⢤⣤⢃⡣⡤ ││   CWS  1  CLE  2               Bottom 5  │ 
- │  ⠐⡥⢤⠤⠧⢤⠤⡇⣿⣿⡗⠒⠒⠺⡏⠉⢻⠤○⣀⣜⡤⠯WSH⡇ ⠉ ││    SF  4  COL  5                  Top 4  │ 
- │  ⠐⡅●⣿⣿⢸⣿⠉⡏⠉●⡗⠒⠒○⠉⢯⣿⡇○●⢧◆⢦○⠁    ││   MIA  2  ATH  2               Bottom 3  │ 
- │   ⠸⡀⠑⠢⣸⠔⠒⡧⠤⢤⠧⡤⠤⢼⠤⢬⡿⠭⠥⣾⠾⠈⠉      ││   MIN at NYY                    1:35 PM  │ 
- │    ⠘·!⣸○⣿⡇⣿⢸⣿⠳·⠼⣄⣼⢹⠉·⢯⡓⡴⠊      ││   BAL at CIN                    7:10 PM  │ 
- │      ⢹⡟⡖⠤⠷⠶⡚⣿⣿⣿!⡇⠿⣼⣤⣇⣠⡏        ││   STL at CHC                    8:08 PM  │ 
- │       ⣻⣷⡄⣿⣿⠑⠉⢆⢠⠊⠉⠑⠃ ⠉⡆⡇        ││   PHI at KC                     8:10 PM  │ 
- │       ⠈⢻⡭⢆⣿⣿⣿⠘⢺      ⠘⡼⣻⠃      ││   MIL at AZ                     9:40 PM  │ 
- │         ⠹⠈⢣⣿⣿⣿⡇     ⣠⣴⣢⢼       ││   DET  3  TEX  0                  Final  │ 
- │ ● Live  ○ Next  ◆ Selected     ││   NYM  3  ATL 14                  Final  │ 
- │ ! See game status · ↑↓ Select  ││ 1-12 of 15 · ↑↓ scroll                   │ 
- ╰────────────────────────────────╯╰──────────────────────────────────────────╯ 
+  ◆ BASEBALL HOUR  DEMO     SAT, JUL 4 2026   TODAY                    ● 5 LIVE 
+   1 All games 15    2 Following 0    3 Nearby                         l  MLB   
+ ╭─ BALLPARK ATLAS ───────────────╮╭─ THE SLATE  15 games ────────────────────╮ 
+ │  ⠙⣷            ⢠⠜⠁  ⢲⠚⠒⢆⢰⢤⡀    ││▎ ▌ PIT  0    ▌ WSH  2              ▼ 3rd │ 
+ │  ⢠⣼⡇           ⢧⢀   ⠘⢆  ⠁ ⠈⠒⠢⡄ ││  ▌ TOR  3    ▌ SEA  5              ▲ 6th │ 
+ │  ⠈⢉⡆            ⠉⠙⠒⢲⠰⡃    ⢀⣀⡔⡿⠶││  ▌ CWS  1    ▌ CLE  2              ▼ 5th │ 
+ │   ⠈⢿⣦⢄⣀⣀            ⠑⠃   ⣴⠻⣋⣠⡛⠙││  ▌ SF   4    ▌ COL  5              ▲ 4th │ 
+ │    ⡸● SEA ⠙⠒⠒⠒⠒⠓⠤⠤⠤⣀    ⣐⡏⡣⣾⠛⠁ ││  ▌ MIA  2    ▌ ATH  2              ▼ 3rd │ 
+ │   ⣰⠁               ⠈⢱⢀⣤ WSH    ││  ▌ MIN    at ▌ NYY               1:35 PM │ 
+ │   ⢸● ATH  ● COL   ○ ⠙●⡕◆○⢳     ││  ▌ BAL    at ▌ CIN               7:10 PM │ 
+ │   ⠘⣄           ○    ○ CLE      ││  ▌ STL    at ▌ CHC               8:08 PM │ 
+ │    ⠈.⢤⡀○            . ⢈⠟⠁      ││  ▌ PHI    at ▌ KC                8:10 PM │ 
+ │     ⠸⢯⣏⠓⠒⠒⡄⢀⡀ .   ⣀⡠⣀⡀⢇        ││  ▌ MIL    at ▌ AZ                9:40 PM │ 
+ │     ⠈⠳⣯⢦  ⠈⠁⠱⡄⡔!⠉⠉⠁  ⠘⢌⡦⣶      ││  ▌ DET  3    ▌ TEX  0              Final │ 
+ │       ⠙⡮⠳⡀   ⢩⠃      ⣀⣬⣥⣹⣀⡀  ⣀⡀││  ▌ NYM  3    ▌ ATL 14              Final │ 
+ │          ⣼   ⠘⢆   ⡖⢲⠆⠉ ⠈⠉⣛⡋⠭⠿⠞⠙││  ▌ SD   0    ▌ LAD  3              Final │ 
+ │           ⠑⠒⢄⣀⠈⣒⠒⣹⣲⣟⣀⣀⡀       ⢀││  ▌ TB     at ▌ HOU             Postponed │ 
+ │               ⠉ ⠑⠣⠼⢿⣴⠋⣿    ⢠⠤⣿⡏││  ▌ BOS    at ▌ LAA             Postponed │ 
+ ╰ ● Live  ○ Upcoming  ◆ Selected─╯╰─ 5 live · 15 games ─ / search ───────────╯ 
  ────────────────────────────────────────────────────────────────────────────── 
-  PIT @ WSH  Nationals Park · Washington                                        
-  First pitch 11:05 AM · Enter details · f Follow                               
- DEMO · Illustrative schedules and scores                                       
-  ↑↓ Game  ←→ Day  / Search  f Follow  l League  ? Help  q Quit                 
+  ▌ PIT 0  –  ▌ WSH 2   ▼ 3rd   ◇◇◆  ●○  2-1                                    
+  Nationals Park · Washington · SportsNet Pittsburgh / Nationals.TV             
+  ● DEMO · Illustrative schedules and scores                                    
+  ↑↓ Game  ←→ Day  ? Help  q Quit                                               

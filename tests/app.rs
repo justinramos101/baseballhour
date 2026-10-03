@@ -4,7 +4,7 @@ use baseballhour::{
         save_preferences,
     },
     data::demo,
-    model::{Coordinates, League, MAX_DATE, MIN_DATE, Query},
+    model::{Coordinates, GameStatus, League, MAX_DATE, MIN_DATE, Query},
 };
 use chrono::{DateTime, NaiveDate, Utc};
 use chrono_tz::America::New_York;
@@ -366,5 +366,41 @@ fn unknown_venues_remain_distinct_while_known_venues_group() {
     assert_eq!(
         resolve_place("Mystery Park", app.games()).unwrap().name,
         "Mystery Park"
+    );
+}
+
+#[test]
+fn refreshed_scores_mark_only_games_whose_runs_changed() {
+    let mut app = loaded_app();
+    let mut refresh = demo(app.query);
+    let live = refresh
+        .games
+        .iter()
+        .position(|g| g.status == GameStatus::Live && g.home.score.is_some())
+        .unwrap();
+    let scheduled = refresh
+        .games
+        .iter()
+        .position(|g| g.status == GameStatus::Scheduled)
+        .unwrap();
+    refresh.games[live].home.score = refresh.games[live].home.score.map(|s| s + 1);
+    refresh.games[scheduled].home.score = Some(0);
+    app.tick = 42;
+    assert!(app.accept(refresh, DataState::Fresh));
+    let marked: Vec<_> = app.scored.iter().map(|(id, tick)| (*id, *tick)).collect();
+    assert_eq!(marked, vec![(app.games()[live].id, 42)]);
+
+    app.change_date(date("2026-07-05"));
+    assert!(app.accept(demo(app.query), DataState::Fresh));
+    assert!(app.scored.is_empty());
+}
+
+#[test]
+fn coordinate_places_read_as_hemispheres() {
+    let place = resolve_place("39.75,-104.99", &[]).unwrap();
+    assert_eq!(place.name, "39.8°N 105.0°W");
+    assert_eq!(
+        resolve_place("-33.87, 151.21", &[]).unwrap().name,
+        "33.9°S 151.2°E"
     );
 }

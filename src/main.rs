@@ -16,7 +16,7 @@ use baseballhour::{
 };
 use chrono::{Local, NaiveDate, TimeZone, Utc};
 use chrono_tz::Tz;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use crossterm::{
     cursor::{Hide, Show},
     event::{self, Event, KeyEventKind},
@@ -64,12 +64,58 @@ struct Args {
     format: Option<Format>,
     #[arg(long, help = "Print a normalized schedule as JSON and exit")]
     json: bool,
-    #[arg(long, help = "Use simple map markers instead of braille")]
+    #[arg(long, help = "Draw with ASCII characters only")]
     ascii: bool,
+    #[arg(
+        long,
+        value_enum,
+        default_value = "auto",
+        help = "Color depth; auto detects truecolor from COLORTERM and the terminal"
+    )]
+    color: ColorDepth,
     #[arg(long, help = "Override the schedule cache directory")]
     cache_dir: Option<PathBuf>,
     #[arg(long, help = "Override the local preferences directory")]
     config_dir: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
+enum ColorDepth {
+    Auto,
+    Truecolor,
+    #[value(name = "256")]
+    Indexed,
+}
+
+/// Whether the terminal renders 24-bit color. Terminals that do usually say so
+/// in `COLORTERM`; a few well-known ones do not.
+fn truecolor(depth: ColorDepth) -> bool {
+    match depth {
+        ColorDepth::Truecolor => true,
+        ColorDepth::Indexed => false,
+        ColorDepth::Auto => {
+            let var = |name: &str| std::env::var(name).unwrap_or_default().to_lowercase();
+            let colorterm = var("COLORTERM");
+            let term = var("TERM");
+            let program = var("TERM_PROGRAM");
+            colorterm.contains("truecolor")
+                || colorterm.contains("24bit")
+                || term.contains("direct")
+                || ["kitty", "alacritty", "wezterm", "ghostty", "foot"]
+                    .iter()
+                    .any(|name| term.contains(name))
+                || [
+                    "iterm.app",
+                    "wezterm",
+                    "vscode",
+                    "ghostty",
+                    "tabby",
+                    "hyper",
+                ]
+                .contains(&program.as_str())
+                || std::env::var_os("WT_SESSION").is_some()
+        }
+    }
 }
 
 fn parse_size(value: &str) -> Result<(u16, u16), String> {
@@ -125,6 +171,7 @@ fn main() -> Result<()> {
         app.view = View::Nearby;
     }
     if app.demo {
+        app.now = demo_evening(date, timezone);
         set_demo(&mut app);
     }
     if args.json || args.once {
@@ -146,7 +193,7 @@ fn main() -> Result<()> {
             )?;
             println!();
         } else {
-            let buffer = render::capture(&app, args.size.0, args.size.1);
+            let mut buffer = render::capture(&app, args.size.0, args.size.1);
             let format = args.format.unwrap_or_else(|| {
                 if io::stdout().is_terminal() {
                     Format::Ansi
@@ -154,6 +201,9 @@ fn main() -> Result<()> {
                     Format::Plain
                 }
             });
+            if matches!(format, Format::Ansi) && !truecolor(args.color) {
+                ui::quantize(&mut buffer);
+            }
             render::write(&buffer, format, &mut io::stdout().lock())?;
         }
         return Ok(());
@@ -168,12 +218,41 @@ fn main() -> Result<()> {
     } else {
         Some(start_worker(ScheduleClient::new(Some(cache))?))
     };
-    run(app, worker.as_ref(), &config, args.offline)
+    run(
+        app,
+        worker.as_ref(),
+        &config,
+        args.offline,
+        truecolor(args.color),
+    )
 }
 
+/// Demo time is 7:10 PM on the demo date in the displayed timezone.
+fn demo_evening(date: NaiveDate, timezone: Option<Tz>) -> chrono::DateTime<Utc> {
+    let evening = date.and_hms_opt(19, 10, 0).unwrap_or_default();
+    timezone
+        .map_or_else(
+            || {
+                Local
+                    .from_local_datetime(&evening)
+                    .earliest()
+                    .map(|t| t.to_utc())
+            },
+            |tz| {
+                tz.from_local_datetime(&evening)
+                    .earliest()
+                    .map(|t| t.to_utc())
+            },
+        )
+        .unwrap_or_else(|| Utc.from_utc_datetime(&evening))
+}
+
+/// Demo time stands still on the first demo day; other dates read as past or future.
 fn set_demo(app: &mut App) {
-    app.now = Utc.from_utc_datetime(&app.query.date.and_hms_opt(23, 10, 0).unwrap());
-    app.accept(data::demo(app.query), DataState::Fresh);
+    app.accept(
+        data::demo_from(app.query, app.local_time(app.now).date_naive()),
+        DataState::Fresh,
+    );
 }
 
 fn load_once(
@@ -261,7 +340,14 @@ impl Drop for TerminalGuard {
     }
 }
 
-fn run(mut app: App, worker: Option<&Worker>, config: &Path, offline: bool) -> Result<()> {
+#[expect(clippy::too_many_lines, reason = "Keep the event loop together")]
+fn run(
+    mut app: App,
+    worker: Option<&Worker>,
+    config: &Path,
+    offline: bool,
+    truecolor: bool,
+) -> Result<()> {
     let previous_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
         restore_terminal();
@@ -276,6 +362,7 @@ fn run(mut app: App, worker: Option<&Worker>, config: &Path, offline: bool) -> R
     let mut in_flight = false;
     let mut last_refresh = Instant::now();
     let mut last_clock = Instant::now();
+    let mut last_frame = Instant::now();
     let mut dirty = true;
     loop {
         if let Some((requests, updates)) = worker {
@@ -326,8 +413,18 @@ fn run(mut app: App, worker: Option<&Worker>, config: &Path, offline: bool) -> R
             last_clock = Instant::now();
             dirty = true;
         }
+        if last_frame.elapsed() >= Duration::from_millis(100) && ui::animates(&app) {
+            app.tick = app.tick.wrapping_add(1);
+            last_frame = Instant::now();
+            dirty = true;
+        }
         if dirty {
-            terminal.draw(|f| ui::draw(f, &app))?;
+            terminal.draw(|f| {
+                ui::draw(f, &app);
+                if !truecolor {
+                    ui::quantize(f.buffer_mut());
+                }
+            })?;
             dirty = false;
         }
         if event::poll(Duration::from_millis(50))? {
