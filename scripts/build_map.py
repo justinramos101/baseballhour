@@ -88,10 +88,12 @@ def main():
     args = parser.parse_args()
     sources = [args.countries.read_bytes(), args.states.read_bytes()]
     result = build(*(json.loads(s) for s in sources))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
+    world = build_world(json.loads(sources[0]))
+    # Build everything before writing, so a failure cannot leave one file regenerated.
+    for path in (args.output, args.world_output):
+        path.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, separators=(",", ":")) + "\n")
     print(f"{args.output}: {len(result['land'])} land points, {len(result['borders'])} boundaries")
-    world = build_world(json.loads(sources[0]))
     args.world_output.write_text(json.dumps(world, separators=(",", ":")) + "\n")
     print(f"{args.world_output}: {len(world['coast'])} coastline rings")
     for path, data in zip((args.countries, args.states), sources):
