@@ -1,0 +1,30 @@
+{
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "platforms": [
+    {
+      "os": "linux",
+      "cpu": "x64",
+      "target": "x86_64-unknown-linux-musl",
+      "sha256": "ceeec2cbaac97693e300fade5352b28f70ee01ddb524831b39a27da159b0585c"
+    },
+    {
+      "os": "linux",
+      "cpu": "arm64",
+      "target": "aarch64-unknown-linux-musl",
+      "sha256": "b7e4d13a2eaecf38ad0300c05511fab3a6821497272998a48e5d6c6610d42fc1"
+    },
+    {
+      "os": "darwin",
+      "cpu": "x64",
+      "target": "x86_64-apple-darwin",
+      "sha256": "9104525262b779b72fed08b9c188b3e63b19581a1a623410299c685b1ea17aa0"
+    },
+    {
+      "os": "darwin",
+      "cpu": "arm64",
+      "target": "aarch64-apple-darwin",
+      "sha256": "c417c8e1adf9d557e0422b1a906d002e4b4636e87d0922f7ba6c0ab994e3d47d"
+    }
+  ]
+}

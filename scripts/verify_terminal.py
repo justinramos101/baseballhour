@@ -13,6 +13,7 @@ import select
 import signal
 import struct
 import subprocess
+import sys
 import tempfile
 import termios
 import time
@@ -121,8 +122,9 @@ class Session:
         self.transcript = bytearray()
         self.resize(140, 42, notify=False)
         env = dict(os.environ, TERM="xterm-256color")
+        command = [str(binary)] if isinstance(binary, (str, Path)) else list(binary)
         self.process = subprocess.Popen(
-            [str(binary), "--demo", "--timezone", "America/Denver", "--date", "2026-07-04",
+            command + ["--demo", "--timezone", "America/Denver", "--date", "2026-07-04",
              "--config-dir", str(directory / name / "config"),
              "--cache-dir", str(directory / name / "cache")],
             stdin=self.slave, stdout=self.slave, stderr=self.slave,
@@ -133,7 +135,7 @@ class Session:
         fcntl.ioctl(self.slave, termios.TIOCSWINSZ, struct.pack("HHHH", rows, columns, 0, 0))
         self.screen.resize(columns, rows)
         if notify:
-            os.kill(self.process.pid, signal.SIGWINCH)
+            os.killpg(self.process.pid, signal.SIGWINCH)
 
     def read(self, timeout):
         ready, _, _ = select.select([self.master], [], [], timeout)
@@ -202,7 +204,7 @@ class Session:
 
     def close(self):
         if self.process.poll() is None:
-            self.process.kill()
+            os.killpg(self.process.pid, signal.SIGKILL)
             self.process.wait(timeout=3)
         self.read(0)
         (self.directory / f"{self.name}.ansi").write_bytes(self.transcript)
@@ -273,9 +275,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("binary", nargs="?", type=Path, default=Path("target/debug/baseballhour"))
     parser.add_argument("--output", type=Path, default=Path("/tmp/baseballhour-terminal-check"))
-    args = parser.parse_args()
-    binary = args.binary.resolve()
-    if not binary.is_file():
+    parser.add_argument("--command", nargs=argparse.REMAINDER, help="command and arguments before app flags")
+    argv = sys.argv[1:]
+    command = None
+    if "--command" in argv:
+        index = argv.index("--command")
+        command = argv[index + 1:]
+        argv = argv[:index]
+        if not command:
+            parser.error("--command requires an executable")
+    args = parser.parse_args(argv)
+    binary = command or args.binary.resolve()
+    if not command and not binary.is_file():
         parser.error(f"binary does not exist: {binary}")
     args.output.mkdir(parents=True, exist_ok=True)
     try:

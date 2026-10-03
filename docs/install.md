@@ -1,5 +1,57 @@
 # Install Baseball Hour
 
+## Run with npx
+
+With [Node.js and npm](https://nodejs.org/en/download) installed, run:
+
+```sh
+npx baseballhour
+```
+
+npx downloads the package into npm's cache and starts the app. It may ask you to confirm the first download. You do not need a global installation, an account, an API key, or a Rust compiler.
+
+Try the offline demo:
+
+```sh
+npx baseballhour --demo
+```
+
+Arguments after `baseballhour` go to the app. For example:
+
+```sh
+npx baseballhour --team Yankees
+npx baseballhour --league all --near Denver
+```
+
+To select a version, include it in the package name:
+
+```sh
+npx baseballhour@0.1.0 --demo
+```
+
+## Install with npm
+
+To keep the `baseballhour` command installed, run:
+
+```sh
+npm install -g baseballhour
+baseballhour
+```
+
+The package includes precompiled executables for all four [supported platforms](#supported-native-archives). npm installs the package without build tools or installation scripts.
+
+To update the global installation, run:
+
+```sh
+npm install -g baseballhour@latest
+```
+
+To remove it, run:
+
+```sh
+npm uninstall -g baseballhour
+```
+
 ## Install the latest native binary
 
 The installer supports macOS and Linux on Intel, AMD, and ARM64 processors. It does not require Rust or `sudo`.
@@ -116,7 +168,9 @@ Cargo installs the binary in `$CARGO_HOME/bin`, usually `$HOME/.cargo/bin`.
 
 ## Update or remove Baseball Hour
 
-Run the native installer again to update to the latest release. Pass `--version` to install a selected release.
+For an npm installation, use `npm install -g baseballhour@latest` to update or `npm uninstall -g baseballhour` to remove it.
+
+For a native installer installation, run the installer again to update to the latest release. Pass `--version` to install a selected release.
 
 To remove a native installation, delete the installed binary from its prefix:
 

@@ -8,7 +8,22 @@ The screenshot is a 140 by 42 terminal capture from synthetic demo data.
 
 ## Install
 
-Baseball Hour provides native binaries for macOS and Linux. The installer detects your operating system and processor, verifies the archive checksum, and installs the binary in `$HOME/.local/bin`.
+With Node.js and npm installed, run:
+
+```sh
+npx baseballhour
+```
+
+To try the offline demo, run `npx baseballhour --demo`. To install a permanent command, run:
+
+```sh
+npm install -g baseballhour
+baseballhour
+```
+
+The npm package includes precompiled binaries for macOS and Linux on Intel, AMD, and ARM64 processors. No Rust compiler, account, or API key is required.
+
+You can also use the native installer without Node.js. It detects your operating system and processor, verifies the archive checksum, and installs the binary in `$HOME/.local/bin`.
 
 ```sh
 curl -fsSLO https://raw.githubusercontent.com/justinramos101/baseballhour/main/scripts/install.sh
@@ -16,7 +31,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Add `$HOME/.local/bin` to `PATH` if your shell cannot find `baseballhour`. The [installation guide](docs/install.md) covers version pinning, custom prefixes, manual installation, and source builds.
+For a native installer installation, add `$HOME/.local/bin` to `PATH` if your shell cannot find `baseballhour`. The [installation guide](docs/install.md) covers npm, version pinning, custom prefixes, manual installation, and source builds.
 
 ## Take the offline tour
 
