@@ -64,9 +64,13 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App, spacious: bool) {
                 "No matching games",
                 "Esc clears your search. Left / right changes the day.",
             ),
-            _ if app.view == View::Following => (
+            _ if app.view == View::Following && app.preferences.favorites.is_empty() => (
                 "Your teams belong here",
                 "Press 1, select a game, then f to follow either team.",
+            ),
+            _ if app.view == View::Following => (
+                "No games for your followed teams in this schedule",
+                "Try another day with ←/→, or press l to change leagues.",
             ),
             _ if app.view == View::Nearby => (
                 "No mapped games on this day",

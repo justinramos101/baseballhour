@@ -120,6 +120,42 @@ fn postponed_games_show_a_matchup_and_alert_legend() {
 }
 
 #[test]
+fn following_empty_state_distinguishes_setup_from_an_unmatched_schedule() {
+    for has_favorites in [false, true] {
+        let mut app = app();
+        if has_favorites {
+            app.preferences.favorites.insert(147);
+        }
+        app.query.league = League::Aaa;
+        app.accept(data::demo(app.query), DataState::Fresh);
+        app.view = View::Following;
+        app.normalize_selection();
+        for (width, height) in [(140, 42), (80, 24)] {
+            let screen = plain(&app, width, height);
+            let panel = screen
+                .lines()
+                .filter_map(|line| line.rsplit('│').nth(1))
+                .flat_map(str::split_whitespace)
+                .collect::<Vec<_>>()
+                .join(" ");
+            let (title, body) = if has_favorites {
+                (
+                    "No games for your followed teams in this schedule",
+                    "Try another day with ←/→, or press l to change leagues.",
+                )
+            } else {
+                (
+                    "Your teams belong here",
+                    "Press 1, select a game, then f to follow either team.",
+                )
+            };
+            assert!(panel.contains(title), "{width}x{height}: {panel}");
+            assert!(panel.contains(body), "{width}x{height}: {panel}");
+        }
+    }
+}
+
+#[test]
 fn empty_error_and_following_views_explain_recovery() {
     let mut app = app();
     app.view = View::Following;
