@@ -27,7 +27,7 @@ fn recorded_mlb_scores_venue_pitchers_and_linescore() {
     assert_eq!(result.games.len(), 15);
     assert!(result.warnings.is_empty());
     let game = &result.games[0];
-    assert_eq!(game.id, 822716);
+    assert_eq!(game.id, 822_716);
     assert_eq!(game.away.name, "Pittsburgh Pirates");
     assert_eq!((game.away.score, game.home.score), (Some(7), Some(1)));
     assert_eq!(
@@ -36,7 +36,13 @@ fn recorded_mlb_scores_venue_pitchers_and_linescore() {
     );
     assert_eq!(game.venue.name, "Nationals Park");
     assert_eq!(game.venue.city, "Washington");
-    assert_eq!(game.venue.coordinates.unwrap().latitude, 38.872861);
+    #[expect(
+        clippy::float_cmp,
+        reason = "Parsing must preserve the exact fixture coordinate"
+    )]
+    {
+        assert_eq!(game.venue.coordinates.unwrap().latitude, 38.872_861);
+    }
     assert_eq!(game.status, GameStatus::Final);
     let line = game.linescore.as_ref().unwrap();
     assert_eq!(line.innings[1].away, Some(4));
@@ -50,11 +56,11 @@ fn recorded_aaa_retains_doubleheader_identity() {
     assert_eq!(result.games.len(), 17);
     assert_eq!(
         (result.games[0].id, result.games[0].doubleheader),
-        (816106, Some(1))
+        (816_106, Some(1))
     );
     assert_eq!(
         (result.games[1].id, result.games[1].doubleheader),
-        (816107, Some(2))
+        (816_107, Some(2))
     );
     assert_eq!(result.games[0].league, "Triple-A");
     assert_eq!(result.games[0].venue.name, "First Horizon Park");
@@ -249,7 +255,7 @@ fn demo_preserves_overnight_utc_offsets_when_shifting_dates() {
     let colorado = original
         .games
         .iter()
-        .find(|game| game.id == 824334)
+        .find(|game| game.id == 824_334)
         .unwrap();
     let start = colorado.starts_at.unwrap();
     assert_eq!(start.to_rfc3339(), "2026-07-05T00:10:00+00:00");
@@ -260,7 +266,11 @@ fn demo_preserves_overnight_utc_offsets_when_shifting_dates() {
             .to_string(),
         "2026-07-04 20:10"
     );
-    let colorado = shifted.games.iter().find(|game| game.id == 824334).unwrap();
+    let colorado = shifted
+        .games
+        .iter()
+        .find(|game| game.id == 824_334)
+        .unwrap();
     assert_eq!(
         colorado
             .starts_at

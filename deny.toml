@@ -1,0 +1,37 @@
+# Check the dependency graph for every platform shipped by the release workflow,
+# plus the glibc Linux target used by CI and source installs.
+[graph]
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-musl",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+
+# Security advisories are checked separately by cargo-audit in security.yml.
+[licenses]
+allow = [
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "CDLA-Permissive-2.0",
+    "ISC",
+    "MIT",
+    "Unicode-3.0",
+    "Zlib",
+]
+# Keep less common licenses scoped to the existing dependencies that need them.
+exceptions = [
+    { crate = "option-ext", allow = ["MPL-2.0"] },
+]
+
+[bans]
+# Transitive dependencies currently require different major versions.
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

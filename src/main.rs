@@ -1,6 +1,6 @@
 use std::{
     io::{self, IsTerminal},
-    path::PathBuf,
+    path::{Path, PathBuf},
     sync::mpsc,
     thread,
     time::{Duration, Instant},
@@ -30,6 +30,10 @@ use ratatui::{Terminal, backend::CrosstermBackend};
     version,
     about = "Baseball schedules, live scores, and a ballpark atlas. No API key needed.",
     after_help = "Start with baseballhour. Arrows browse games and dates; ? shows the keys.\nTry baseballhour --demo for an offline tour with illustrative scores."
+)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "Each boolean represents an independent CLI switch"
 )]
 struct Args {
     #[arg(long, help = "Explore an illustrative slate without using the network")]
@@ -164,7 +168,7 @@ fn main() -> Result<()> {
     } else {
         Some(start_worker(ScheduleClient::new(Some(cache))?))
     };
-    run(app, worker, config, args.offline)
+    run(app, worker.as_ref(), &config, args.offline)
 }
 
 fn set_demo(app: &mut App) {
@@ -257,7 +261,7 @@ impl Drop for TerminalGuard {
     }
 }
 
-fn run(mut app: App, worker: Option<Worker>, config: PathBuf, offline: bool) -> Result<()> {
+fn run(mut app: App, worker: Option<&Worker>, config: &Path, offline: bool) -> Result<()> {
     let previous_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
         restore_terminal();
@@ -274,7 +278,7 @@ fn run(mut app: App, worker: Option<Worker>, config: PathBuf, offline: bool) -> 
     let mut last_clock = Instant::now();
     let mut dirty = true;
     loop {
-        if let Some((requests, updates)) = &worker {
+        if let Some((requests, updates)) = worker {
             if pending.is_some_and(|deadline| Instant::now() >= deadline) {
                 requests.send(Request {
                     generation,
@@ -341,7 +345,7 @@ fn run(mut app: App, worker: Option<Worker>, config: PathBuf, offline: bool) -> 
                             }
                         }
                         Action::Save if !app.demo => {
-                            if let Err(error) = app::save_preferences(&config, &app.preferences) {
+                            if let Err(error) = app::save_preferences(config, &app.preferences) {
                                 app.message = Some(format!(
                                     "Could not save preferences: {error}. Kept for this session."
                                 ));

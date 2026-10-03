@@ -6,7 +6,10 @@ use ratatui::{
 };
 use serde::Deserialize;
 
-use super::*;
+use super::{
+    AMBER, App, BACKGROUND, BLUE, Color, Frame, GREEN, Game, GameStatus, Line, MUTED, Paragraph,
+    Rect, Style, UnicodeWidthStr, View, block, bold, state_color, state_symbol, text,
+};
 
 #[derive(Deserialize)]
 struct Geography {
@@ -22,6 +25,7 @@ fn geography() -> &'static Geography {
     })
 }
 
+#[expect(clippy::too_many_lines, reason = "Keep this panel layout together")]
 pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App) {
     let panel = block("BALLPARK ATLAS");
     let inside = panel.inner(area);
@@ -108,12 +112,8 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App) {
             .copied()
             .unwrap_or(group[0]);
         let p = game.venue.coordinates.unwrap();
-        let x = plot.x
-            + ((p.longitude - xb[0]) / (xb[1] - xb[0]) * f64::from(plot.width.saturating_sub(1)))
-                .round() as u16;
-        let y = plot.y
-            + ((yb[1] - p.latitude) / (yb[1] - yb[0]) * f64::from(plot.height.saturating_sub(1)))
-                .round() as u16;
+        let x = plot.x + cell_offset((p.longitude - xb[0]) / (xb[1] - xb[0]), plot.width);
+        let y = plot.y + cell_offset((yb[1] - p.latitude) / (yb[1] - yb[0]), plot.height);
         if x >= plot.right() || y >= plot.bottom() {
             continue;
         }
@@ -137,14 +137,19 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App) {
         labels.push((x, y, label, color));
     }
     for (x, y, label, color) in labels.into_iter().rev() {
-        let width = label.width() as u16;
+        let Ok(width) = u16::try_from(label.width()) else {
+            continue;
+        };
         for (dx, dy) in [(2, 0), (-(i32::from(width)) - 1, 0), (1, -1), (1, 1)] {
             let lx = i32::from(x) + dx;
             let ly = i32::from(y) + dy;
             if lx < i32::from(plot.x) || ly < i32::from(plot.y) {
                 continue;
             }
-            let rect = Rect::new(lx as u16, ly as u16, width, 1);
+            let (Ok(lx), Ok(ly)) = (u16::try_from(lx), u16::try_from(ly)) else {
+                continue;
+            };
+            let rect = Rect::new(lx, ly, width, 1);
             if rect.right() > plot.right()
                 || rect.bottom() > plot.bottom()
                 || occupied.iter().any(|r: &Rect| r.intersects(rect))
@@ -244,4 +249,15 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App) {
         Paragraph::new(text(caption, MUTED)),
         Rect::new(inside.x, inside.bottom().saturating_sub(1), inside.width, 1),
     );
+}
+
+// Projection intentionally rounds to a terminal cell. Clamping keeps the result
+// nonnegative and no larger than the u16 extent before conversion.
+#[expect(
+    clippy::cast_possible_truncation,
+    clippy::cast_sign_loss,
+    reason = "Rounded and clamped to the terminal extent"
+)]
+fn cell_offset(fraction: f64, extent: u16) -> u16 {
+    (fraction.clamp(0.0, 1.0) * f64::from(extent.saturating_sub(1))).round() as u16
 }

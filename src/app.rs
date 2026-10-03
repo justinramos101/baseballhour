@@ -93,6 +93,7 @@ pub struct App {
 }
 
 impl App {
+    #[must_use]
     pub fn new(query: Query, preferences: Preferences, timezone: Option<Tz>) -> Self {
         Self {
             query,
@@ -111,10 +112,12 @@ impl App {
         }
     }
 
+    #[must_use]
     pub fn games(&self) -> &[Game] {
         self.snapshot.as_ref().map_or(&[], |s| s.games.as_slice())
     }
 
+    #[must_use]
     pub fn visible_games(&self) -> Vec<&Game> {
         let mut games: Vec<_> = self
             .games()
@@ -149,11 +152,13 @@ impl App {
         games
     }
 
+    #[must_use]
     pub fn is_favorite(&self, game: &Game) -> bool {
         self.preferences.favorites.contains(&game.away.id)
             || self.preferences.favorites.contains(&game.home.id)
     }
 
+    #[must_use]
     pub fn distance(&self, game: &Game) -> Option<f64> {
         Some(
             self.preferences
@@ -164,6 +169,7 @@ impl App {
         )
     }
 
+    #[must_use]
     pub fn selected_game(&self) -> Option<&Game> {
         self.games().iter().find(|g| Some(g.id) == self.selected)
     }
@@ -204,6 +210,7 @@ impl App {
         self.state = DataState::Loading;
     }
 
+    #[must_use]
     pub fn local_time(&self, utc: DateTime<Utc>) -> DateTime<FixedOffset> {
         match self.timezone {
             Some(tz) => utc.with_timezone(&tz).fixed_offset(),
@@ -211,11 +218,13 @@ impl App {
         }
     }
 
+    #[must_use]
     pub fn zone_label(&self) -> String {
         self.timezone
             .map_or_else(|| "Local time".into(), |tz| tz.name().into())
     }
 
+    #[must_use]
     pub fn start_label(&self, game: &Game) -> String {
         let Some(start) = game.starts_at else {
             return "Time TBD".into();
@@ -233,6 +242,10 @@ impl App {
         }
     }
 
+    #[expect(
+        clippy::too_many_lines,
+        reason = "Keep the keyboard dispatch table together"
+    )]
     pub fn handle_key(&mut self, key: KeyEvent) -> Action {
         if key.modifiers.contains(KeyModifiers::CONTROL) && key.code == KeyCode::Char('c') {
             return Action::Quit;
@@ -327,12 +340,12 @@ impl App {
                         if let Some(game) = self.selected_game() {
                             let team = if index == 0 { &game.away } else { &game.home };
                             let (id, name) = (team.id, team.name.clone());
-                            if !self.preferences.favorites.remove(&id) {
+                            if self.preferences.favorites.remove(&id) {
+                                self.message = Some(format!("Unfollowed {name}."));
+                            } else {
                                 self.preferences.favorites.insert(id);
                                 self.message =
                                     Some(format!("Following {name}. Press 2 for your teams."));
-                            } else {
-                                self.message = Some(format!("Unfollowed {name}."));
                             }
                             self.normalize_selection();
                         }
@@ -348,7 +361,7 @@ impl App {
                     KeyCode::Esc => return Action::None,
                     KeyCode::Up | KeyCode::Char('k') => index = index.saturating_sub(1),
                     KeyCode::Down | KeyCode::Char('j') => {
-                        index = (index + 1).min(League::ALL.len() - 1)
+                        index = (index + 1).min(League::ALL.len() - 1);
                     }
                     KeyCode::Enter => {
                         self.query.league = League::ALL[index];
@@ -460,6 +473,7 @@ impl App {
     }
 }
 
+#[must_use]
 pub fn load_preferences(directory: &Path) -> (Preferences, Option<String>) {
     let path = directory.join("preferences.json");
     if !path.exists() {
@@ -486,12 +500,20 @@ pub fn load_preferences(directory: &Path) -> (Preferences, Option<String>) {
     }
 }
 
+/// Save preferences with atomic file replacement.
+///
+/// # Errors
+/// Returns an error if serialization or writing the preferences file fails.
 pub fn save_preferences(directory: &Path, preferences: &Preferences) -> anyhow::Result<()> {
     let bytes = serde_json::to_vec_pretty(preferences)?;
     storage::write_atomic(&directory.join("preferences.json"), &bytes)?;
     Ok(())
 }
 
+/// Resolve coordinates, a known city, or a unique venue from the current slate.
+///
+/// # Errors
+/// Returns an error for invalid coordinates, empty input, or an unknown or ambiguous place.
 pub fn resolve_place(input: &str, games: &[Game]) -> Result<Place, String> {
     let text = input.trim();
     if let Some((lat, lon)) = text.split_once(',') {
@@ -539,13 +561,14 @@ pub fn resolve_place(input: &str, games: &[Game]) -> Result<Place, String> {
         })
         .collect();
     if let Some(game) = venues.first()
+        && let Some(coordinates) = game.venue.coordinates
         && venues
             .iter()
             .all(|candidate| candidate.venue_key() == game.venue_key())
     {
         return Ok(Place {
             name: game.venue.name.clone(),
-            coordinates: game.venue.coordinates.unwrap(),
+            coordinates,
         });
     }
     Err("Place not found or ambiguous. Try a city such as Denver, or 39.75,-104.99.".into())

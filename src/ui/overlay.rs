@@ -2,8 +2,12 @@ use ratatui::widgets::{Clear, Wrap};
 
 use crate::model::League;
 
-use super::*;
+use super::{
+    App, BACKGROUND, Block, Frame, GREEN, Input, Line, MUTED, PANEL, Paragraph, RED, Rect, Span,
+    Style, TEXT, block, bold, games, text,
+};
 
+#[expect(clippy::too_many_lines, reason = "Keep this panel layout together")]
 pub(super) fn draw(frame: &mut Frame, app: &App) {
     if matches!(app.input, Input::Normal | Input::Search) {
         return;
@@ -156,7 +160,11 @@ pub(super) fn draw(frame: &mut Frame, app: &App) {
         },
         MUTED,
     )));
-    let rect = centered(frame.area(), 70, (lines.len() + 4) as u16);
+    let rect = centered(
+        frame.area(),
+        70,
+        u16::try_from(lines.len() + 4).unwrap_or(u16::MAX),
+    );
     frame.render_widget(Clear, rect);
     frame.render_widget(
         Paragraph::new(lines)

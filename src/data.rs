@@ -26,6 +26,10 @@ struct Cache {
 }
 
 impl ScheduleClient {
+    /// Create an HTTPS schedule client with an optional cache directory.
+    ///
+    /// # Errors
+    /// Returns an error if the HTTP client cannot be initialized.
     pub fn new(cache_dir: Option<PathBuf>) -> Result<Self> {
         let client = reqwest::blocking::Client::builder()
             .timeout(Duration::from_secs(10))
@@ -46,6 +50,7 @@ impl ScheduleClient {
         )))
     }
 
+    #[must_use]
     pub fn cached(&self, query: Query) -> Option<Snapshot> {
         let file = fs::File::open(self.cache_path(query)?).ok()?;
         let mut bytes = Vec::new();
@@ -60,6 +65,10 @@ impl ScheduleClient {
         parse_schedule(&cache.body, query, cache.fetched_at).ok()
     }
 
+    /// Fetch and validate a schedule, caching it when caching is enabled.
+    ///
+    /// # Errors
+    /// Returns an error on request failure, an oversized response, or an invalid schedule.
     pub fn fetch(&self, query: Query) -> Result<Snapshot> {
         let response = self
             .client
@@ -106,7 +115,7 @@ impl ScheduleClient {
         let mut snapshot = parse_schedule(&body, query, fetched_at)?;
         if self.cache_dir.is_some()
             && self
-                .write_cache(Cache {
+                .write_cache(&Cache {
                     schema: 1,
                     query,
                     fetched_at,
@@ -121,11 +130,11 @@ impl ScheduleClient {
         Ok(snapshot)
     }
 
-    fn write_cache(&self, cache: Cache) -> Result<()> {
+    fn write_cache(&self, cache: &Cache) -> Result<()> {
         let destination = self
             .cache_path(cache.query)
             .ok_or_else(|| anyhow!("Cache disabled"))?;
-        let bytes = serde_json::to_vec(&cache)?;
+        let bytes = serde_json::to_vec(cache)?;
         storage::write_atomic(&destination, &bytes)?;
         Ok(())
     }
@@ -274,6 +283,11 @@ fn game(value: &Value, query: Query) -> Option<Game> {
     })
 }
 
+/// Parse a provider response for the requested date, skipping malformed games.
+///
+/// # Errors
+/// Returns an error for an oversized body, invalid JSON or envelope, a mismatched
+/// date, an incomplete schedule, or a nonempty schedule with no readable games.
 pub fn parse_schedule(body: &str, query: Query, fetched_at: DateTime<Utc>) -> Result<Snapshot> {
     if body.len() as u64 > MAX_BODY {
         bail!("Schedule response exceeded the size limit");
@@ -329,6 +343,11 @@ pub fn parse_schedule(body: &str, query: Query, fetched_at: DateTime<Utc>) -> Re
     })
 }
 
+/// Build a synthetic schedule from the embedded fixtures.
+///
+/// # Panics
+/// Panics if a bundled fixture is invalid.
+#[must_use]
 pub fn demo(query: Query) -> Snapshot {
     let fixtures: Value =
         serde_json::from_str(include_str!("../assets/demo.json")).expect("embedded demo is valid");

@@ -42,6 +42,24 @@ cargo test --locked --all-targets
 cargo build --locked --release
 ```
 
+Clippy's full `pedantic` group and the `dbg_macro`, `todo`, and `unimplemented`
+lints are enabled in `Cargo.toml`; CI treats warnings as errors. First-party
+unsafe code is forbidden. Keep any lint exceptions local and include a reason.
+
+Install the pinned dependency tools and run the dependency checks:
+
+```sh
+cargo install cargo-deny --version 0.19.4 --locked
+cargo install cargo-machete --version 0.9.2 --locked
+cargo deny --locked check licenses bans sources
+cargo machete
+```
+
+`deny.toml` defines the license and source policy for the supported targets.
+Review policy changes when adding dependencies. Duplicate transitive versions
+produce warnings; disallowed licenses, sources, and wildcard dependencies fail
+the check. Security advisories remain covered by the separate cargo-audit job.
+
 For changes to input, resizing, or terminal cleanup, run the pseudo-terminal check:
 
 ```sh

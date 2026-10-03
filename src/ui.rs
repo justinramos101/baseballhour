@@ -217,7 +217,10 @@ fn navigation(frame: &mut Frame, area: Rect, app: &App) {
         ));
         spans.push(text(" ", MUTED));
     }
-    let width = spans.iter().map(|s| s.width()).sum::<usize>();
+    let width = spans
+        .iter()
+        .map(ratatui::prelude::Span::width)
+        .sum::<usize>();
     let league = format!("l {} ", app.query.league.label());
     if row.width as usize > width + league.len() {
         spans.push(text(

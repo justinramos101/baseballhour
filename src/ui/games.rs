@@ -1,7 +1,14 @@
 use ratatui::widgets::Wrap;
 
-use super::*;
+use std::fmt::Write as _;
 
+use super::{
+    AMBER, App, BACKGROUND, BORDER, Block, Borders, DataState, Frame, GREEN, GameStatus, Line,
+    MUTED, Margin, Paragraph, Rect, SELECTED, Style, TEXT, UnicodeWidthStr, View, block, bold,
+    ellipsize, state_color, text,
+};
+
+#[expect(clippy::too_many_lines, reason = "Keep this panel layout together")]
 pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App, spacious: bool) {
     let games = app.visible_games();
     let game_label = if games.len() == 1 { "game" } else { "games" };
@@ -92,7 +99,8 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App, spacious: bool) {
     let first = selected.saturating_sub(capacity.saturating_sub(1));
     let end = (first + capacity).min(games.len());
     for (row, game) in games[first..end].iter().enumerate() {
-        let y = inside.y + row as u16 * row_height;
+        let Ok(row) = u16::try_from(row) else { break };
+        let y = inside.y.saturating_add(row.saturating_mul(row_height));
         if y >= inside.bottom() {
             break;
         }
@@ -142,7 +150,8 @@ pub(super) fn draw(frame: &mut Frame, area: Rect, app: &App, spacious: bool) {
             .doubleheader
             .map_or(String::new(), |n| format!(" G{n}"));
         let content_width =
-            (prefix.width() + matchup.width() + number.width() + state.width() + 2) as u16;
+            u16::try_from(prefix.width() + matchup.width() + number.width() + state.width() + 2)
+                .unwrap_or(u16::MAX);
         let gap = inside.width.saturating_sub(content_width).max(1) as usize;
         let line = Line::from(vec![
             text(prefix, AMBER),
@@ -191,6 +200,10 @@ fn score(value: Option<u16>) -> String {
     value.map_or("-".into(), |n| n.to_string())
 }
 
+#[expect(
+    clippy::too_many_lines,
+    reason = "Keep the game detail layout together"
+)]
 pub(super) fn details(frame: &mut Frame, area: Rect, app: &App) {
     let panel = block("AT THE BALLPARK");
     let inside = panel.inner(area).inner(Margin::new(1, 0));
@@ -245,19 +258,19 @@ pub(super) fn details(frame: &mut Frame, area: Rect, app: &App) {
             let max_innings = ((inside.width.saturating_sub(17)) / 3).clamp(1, 12) as usize;
             let start = line.innings.len().saturating_sub(max_innings);
             let innings = &line.innings[start..];
-            let head = innings
-                .iter()
-                .map(|i| format!("{:>3}", i.number))
-                .collect::<String>();
+            let head = innings.iter().fold(String::new(), |mut output, i| {
+                write!(output, "{:>3}", i.number).expect("writing to a String cannot fail");
+                output
+            });
             lines.push(Line::from(text(format!("     {head}    R  H  E"), MUTED)));
-            let away = innings
-                .iter()
-                .map(|i| format!("{:>3}", score(i.away)))
-                .collect::<String>();
-            let home = innings
-                .iter()
-                .map(|i| format!("{:>3}", score(i.home)))
-                .collect::<String>();
+            let away = innings.iter().fold(String::new(), |mut output, i| {
+                write!(output, "{:>3}", score(i.away)).expect("writing to a String cannot fail");
+                output
+            });
+            let home = innings.iter().fold(String::new(), |mut output, i| {
+                write!(output, "{:>3}", score(i.home)).expect("writing to a String cannot fail");
+                output
+            });
             lines.push(Line::from(bold(
                 format!(
                     "{:<4} {away}   {:>2} {:>2} {:>2}",
