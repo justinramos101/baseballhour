@@ -2,19 +2,27 @@
 
 Use GitHub Actions to publish the precompiled `baseballhour` package. Users need Node.js and npm to install it. They need no npm account, API key, or Rust compiler.
 
-## Connect the npm account
+## Connect GitHub to npm
 
-For the first publication, add a token to GitHub:
+The package uses npm trusted publishing. GitHub authenticates with a short-lived identity credential, so the repository needs no `NPM_TOKEN` secret.
 
-1. Open [npm access tokens](https://www.npmjs.com/settings/thulr/tokens) while signed in as `thulr`.
-2. Create a granular token with **Read and write (publish and stage)** permission.
-3. Enable **Bypass 2FA** for unattended publication.
-4. Select **All Packages** because `baseballhour` does not exist yet.
-5. Set a short expiration date.
-6. Copy the token into the repository's [new Actions secret form](https://github.com/justinramos101/baseballhour/settings/secrets/actions/new).
-7. Name the secret `NPM_TOKEN`.
+To recreate the trusted publisher, use npm 11.15 or later with an account that has write access to `baseballhour`:
 
-Keep the token out of source files, issue comments, and chat. After the first publication, replace the token with trusted publishing or a token restricted to `baseballhour`.
+```sh
+npm login
+npm trust github baseballhour --repo justinramos101/baseballhour \
+	--file npm-publish.yml --allow-publish --yes
+```
+
+Complete each browser authentication challenge that npm presents. To inspect the configuration, run:
+
+```sh
+npm trust list baseballhour
+```
+
+Confirm that the repository is `justinramos101/baseballhour` and the workflow filename is `npm-publish.yml`. Leave the environment name empty. The filename is case-sensitive.
+
+Trusted publishing requires an existing npm package. The initial `baseballhour` publication used the local CLI. See [npm's trusted-publisher prerequisites](https://docs.npmjs.com/cli/v11/commands/npm-trust/#prerequisites) for new packages.
 
 ## Publish a release
 
@@ -47,20 +55,6 @@ Correct the failed check or publisher credential, then dispatch the workflow aga
 An existing npm version succeeds only when its published integrity matches the tested tarball. Different bytes fail. npm versions cannot be overwritten. If package contents must change, publish a new version.
 
 GitHub serializes publication jobs. A newer pending job can replace an older pending job. If a run is cancelled before publication, dispatch that tag again.
-
-## Remove the publishing token
-
-After `baseballhour` exists on npm, configure [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/):
-
-1. Open the package settings on npm.
-2. Add a GitHub Actions trusted publisher.
-3. Set the repository owner to `justinramos101`.
-4. Set the repository name to `baseballhour`.
-5. Set the workflow filename to `npm-publish.yml`.
-6. Leave the environment name empty.
-7. Delete the GitHub `NPM_TOKEN` secret after the trusted publisher is configured.
-
-The workflow supports npm's short-lived GitHub identity credentials and attaches package provenance. Trusted publishing requires an existing package, so the first publication uses the token.
 
 ## Check the package locally
 
