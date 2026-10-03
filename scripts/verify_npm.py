@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import tempfile
 
-from package_npm import ROOT, inspect_tarball, load_release, native_path
+from package_npm import ROOT, inspect_tarball, load_release, native_path, verify_evidence
 
 
 def run(command, env, cwd, success=True):
@@ -90,8 +90,10 @@ def terminal(command, output, env, cwd):
     print(result.stdout.strip())
 
 
-def verify(archive, output):
-    release = load_release()
+def verify(archive, output, release_manifest=None, evidence=None):
+    release = load_release(release_manifest)
+    if evidence:
+        verify_evidence(archive, release, evidence)
     inventory = inspect_tarball(archive, release)
     npm = shutil.which("npm")
     npx = shutil.which("npx")
@@ -130,11 +132,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("archive", nargs="?", type=Path)
     parser.add_argument("--output", type=Path, default=ROOT / "dist/npm/verification")
+    parser.add_argument("--release-manifest", type=Path)
+    parser.add_argument("--evidence", type=Path)
     args = parser.parse_args()
     try:
-        archive = args.archive or ROOT / f"dist/npm/baseballhour-{load_release()['version']}.tgz"
-        verify(archive.resolve(), args.output.resolve())
-    except (AssertionError, ValueError, OSError, subprocess.SubprocessError) as error:
+        archive = args.archive or ROOT / f"dist/npm/baseballhour-{load_release(args.release_manifest)['version']}.tgz"
+        verify(archive.resolve(), args.output.resolve(), args.release_manifest, args.evidence)
+    except (AssertionError, ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError) as error:
         parser.exit(1, f"npm verification failed: {error}\n")
 
 

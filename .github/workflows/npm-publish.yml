@@ -1,0 +1,113 @@
+name: Publish npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published stable native release tag
+        required: true
+        type: string
+      publish:
+        description: Publish after all four native verifiers pass
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      attestations: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+      - run: npm install --global npm@11.19.0
+      - name: Test release and publication policy
+        run: python3 scripts/test_npm_release.py
+      - name: Resolve, attest, and pack native release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: python3 scripts/package_npm.py --tag "$TAG"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: npm-release
+          path: |
+            dist/npm/*.tgz
+            dist/npm/release.json
+            dist/npm/evidence.json
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    needs: prepare
+    name: Verify (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-15, macos-15-intel]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: npm-release
+          path: dist/npm
+      - name: Verify exact tarball with npm, npx, and real terminals
+        run: >-
+          python3 scripts/verify_npm.py dist/npm/*.tgz
+          --release-manifest dist/npm/release.json --evidence dist/npm/evidence.json
+
+  publish:
+    needs: verify
+    if: >-
+      (github.event_name == 'release' && github.event.action == 'published' &&
+       !github.event.release.draft && !github.event.release.prerelease) ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.publish == true)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: npm-publication
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global npm@11.19.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: npm-release
+          path: dist/npm
+      - name: Publish verified bytes with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: >-
+          python3 scripts/publish_npm.py dist/npm/*.tgz
+          --release-manifest dist/npm/release.json --evidence dist/npm/evidence.json

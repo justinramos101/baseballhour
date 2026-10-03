@@ -2,26 +2,34 @@
 """Pack verified native releases into the baseballhour npm package."""
 
 import argparse
+import base64
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
 import tarfile
 import tempfile
+import tomllib
 import urllib.request
 
 
 ROOT = Path(__file__).resolve().parents[1]
-UPSTREAM = "https://github.com/justinramos101/baseballhour"
+REPOSITORY = "justinramos101/baseballhour"
+UPSTREAM = f"https://github.com/{REPOSITORY}"
+STABLE_VERSION = r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
 
 
-def load_release():
-    release = json.loads((ROOT / "npm/release.json").read_text())
-    if set(release) != {"version", "tag", "platforms"}:
+def load_release(path=None):
+    return validate_release(json.loads((path or ROOT / "npm/release.json").read_text()))
+
+
+def validate_release(release):
+    if not isinstance(release, dict) or set(release) != {"version", "tag", "platforms"}:
         raise ValueError("release must contain version, tag, and platforms")
-    if not re.fullmatch(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)", release["version"]):
+    if not re.fullmatch(STABLE_VERSION, release["version"]):
         raise ValueError("release version must be a stable semantic version")
     if release["tag"] != f"v{release['version']}":
         raise ValueError("release tag must match its version")
@@ -43,6 +51,93 @@ def load_release():
     if seen != expected:
         raise ValueError("release must contain all four platforms")
     return release
+
+
+def github_json(endpoint):
+    result = subprocess.run(["gh", "api", f"repos/{REPOSITORY}/{endpoint}"],
+                            check=True, text=True, capture_output=True)
+    return json.loads(result.stdout)
+
+
+def checksum(sidecar, name):
+    match = re.fullmatch(r"([0-9a-f]{64})  " + re.escape(name) + r"\n", sidecar)
+    if not match:
+        raise ValueError(f"invalid checksum sidecar: {name}")
+    return match[1]
+
+
+def resolve_release(tag, assets, destination):
+    if not re.fullmatch("v" + STABLE_VERSION, tag):
+        raise ValueError("tag must be vMAJOR.MINOR.PATCH with no prerelease or leading zeroes")
+    metadata = github_json(f"releases/tags/{tag}")
+    if metadata["tag_name"] != tag or metadata["draft"] is not False or metadata["prerelease"] is not False:
+        raise ValueError("expected a published stable release for the requested tag")
+    commit = github_json(f"commits/{tag}")["sha"]
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError("invalid native source commit")
+    cargo = github_json(f"contents/Cargo.toml?ref={commit}")
+    version = tomllib.loads(base64.b64decode(cargo["content"]).decode())["package"]["version"]
+    if tag != f"v{version}":
+        raise ValueError("native Cargo version does not match the release tag")
+    release = load_release()
+    release.update(version=version, tag=tag)
+    listed = metadata["assets"]
+    names = [entry["name"] for entry in listed]
+    if len(names) != len(set(names)):
+        raise ValueError("duplicate release asset names")
+    entries = {entry["name"]: entry for entry in listed}
+    for asset in release["platforms"]:
+        name = archive_name(release, asset)
+        for filename in (name, name + ".sha256"):
+            entry = entries.get(filename)
+            if not entry or entry["state"] != "uploaded" or entry["size"] <= 0:
+                raise ValueError(f"missing or incomplete release asset: {filename}")
+            target = destination / filename
+            if assets:
+                shutil.copyfile(assets / filename, target)
+            else:
+                url = f"{UPSTREAM}/releases/download/{tag}/{filename}"
+                with urllib.request.urlopen(url, timeout=60) as source, target.open("wb") as output:
+                    shutil.copyfileobj(source, output)
+            if target.stat().st_size != entry["size"]:
+                raise ValueError(f"release asset size mismatch: {filename}")
+        asset["sha256"] = checksum((destination / (name + ".sha256")).read_bytes().decode("utf-8"), name)
+        archive = destination / name
+        if hashlib.sha256(archive.read_bytes()).hexdigest() != asset["sha256"]:
+            raise ValueError(f"SHA-256 mismatch: {name}")
+        digest = entries[name].get("digest")
+        if digest is not None and digest != "sha256:" + asset["sha256"]:
+            raise ValueError(f"GitHub asset digest mismatch: {name}")
+        subprocess.run([
+            "gh", "attestation", "verify", str(archive), "--repo", REPOSITORY,
+            "--signer-workflow", f"{REPOSITORY}/.github/workflows/release.yml",
+            "--source-ref", f"refs/tags/{tag}", "--source-digest", commit,
+            "--deny-self-hosted-runners",
+        ], check=True)
+    return validate_release(release), commit
+
+
+def integrity(archive):
+    return "sha512-" + base64.b64encode(hashlib.sha512(archive.read_bytes()).digest()).decode()
+
+
+def verify_evidence(archive, release, path):
+    evidence = json.loads(path.read_text())
+    fields = {"tag", "native_commit", "package_source_commit", "filename", "integrity"}
+    if not isinstance(evidence, dict) or set(evidence) != fields:
+        raise ValueError("unexpected package evidence schema")
+    for field in ("native_commit", "package_source_commit"):
+        if field == "native_commit" and evidence[field] is None:
+            continue
+        if not isinstance(evidence[field], str) or not re.fullmatch(r"[0-9a-f]{40}", evidence[field]):
+            raise ValueError(f"invalid evidence commit: {field}")
+    source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    if evidence["package_source_commit"] != source or source != os.environ.get("GITHUB_SHA", source):
+        raise ValueError("package source commit differs from the verification checkout or run")
+    if (evidence["tag"] != release["tag"] or evidence["filename"] != archive.name
+            or evidence["integrity"] != integrity(archive)):
+        raise ValueError("package evidence does not match the archive and release")
+    return evidence
 
 
 def archive_name(release, asset):
@@ -127,10 +222,15 @@ def inspect_tarball(archive, release, stage=None):
     return sorted(expected)
 
 
-def build(assets, output):
-    release = load_release()
+def build(assets, output, tag=None, release_manifest=None):
     output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="stage-", dir=output) as temporary:
+        native_commit = None
+        if tag:
+            release, native_commit = resolve_release(tag, assets, Path(temporary))
+            assets = Path(temporary)
+        else:
+            release = load_release(release_manifest)
         stage = Path(temporary) / "package"
         (stage / "bin").mkdir(parents=True)
         (stage / "bin/baseballhour").write_text(launcher(release))
@@ -152,15 +252,26 @@ def build(assets, output):
             extract_binary(archive, release, asset, stage / native_path(asset))
         result = subprocess.run(
             ["npm", "pack", "--ignore-scripts", "--json", "--cache", str(Path(temporary) / "cache"),
-             "--pack-destination", str(output)],
+             "--pack-destination", temporary],
             cwd=stage, text=True, capture_output=True, check=True,
         )
         packed = json.loads(result.stdout)
         expected_filename = f"baseballhour-{release['version']}.tgz"
         if len(packed) != 1 or packed[0]["filename"] != expected_filename:
             raise ValueError("npm pack returned an unexpected package")
-        archive = output / expected_filename
+        archive = Path(temporary) / expected_filename
         inventory = inspect_tarball(archive, release, stage)
+        evidence = {
+            "tag": release["tag"], "native_commit": native_commit,
+            "package_source_commit": subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+            "filename": archive.name, "integrity": integrity(archive),
+        }
+        for filename, data in (("release.json", release), ("evidence.json", evidence)):
+            (Path(temporary) / filename).write_text(json.dumps(data, indent=2) + "\n")
+        for filename in (expected_filename, "release.json", "evidence.json"):
+            (Path(temporary) / filename).replace(output / filename)
+        archive = output / expected_filename
         print(f"Verified {len(inventory)} packed files. {archive} ({archive.stat().st_size} bytes)")
     return archive
 
@@ -169,12 +280,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--assets", type=Path, help="directory of already downloaded release archives")
     parser.add_argument("--output", type=Path, default=ROOT / "dist/npm")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--tag", help="published stable GitHub release to resolve and attest")
+    selection.add_argument("--release-manifest", type=Path, help="validated release table to package")
     args = parser.parse_args()
     try:
-        build(args.assets.resolve() if args.assets else None, args.output.resolve())
+        build(args.assets.resolve() if args.assets else None, args.output.resolve(),
+              args.tag, args.release_manifest)
     except subprocess.CalledProcessError as error:
         parser.exit(1, f"npm packaging failed: {error.stderr or error}\n")
-    except (ValueError, OSError, tarfile.TarError, subprocess.SubprocessError) as error:
+    except (ValueError, KeyError, TypeError, OSError, tarfile.TarError, subprocess.SubprocessError) as error:
         parser.exit(1, f"npm packaging failed: {error}\n")
 
 

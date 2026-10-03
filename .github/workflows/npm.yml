@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '24'
+      - name: Test release and publication policy
+        run: python3 scripts/test_npm_release.py
       - name: Pack verified native release
         run: python3 scripts/package_npm.py
       - name: Verify npm, npx, and terminal behavior
