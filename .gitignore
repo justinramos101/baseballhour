@@ -1,0 +1,13 @@
+/target/
+/dist/
+.DS_Store
+/.impeccable/
+/.audit/
+/captures/
+/.agents/
+/.codex/
+/.aws/
+.env
+.env.*
+__pycache__/
+*.pyc

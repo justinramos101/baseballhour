@@ -1,0 +1,30 @@
+[package]
+name = "baseballhour"
+version = "0.1.0"
+edition = "2024"
+description = "Baseball schedules, live scores, and a ballpark atlas in your terminal"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/justinramos101/baseballhour"
+homepage = "https://github.com/justinramos101/baseballhour"
+keywords = ["baseball", "mlb", "tui", "terminal", "ratatui"]
+categories = ["command-line-utilities"]
+exclude = ["/dist", "/scripts/__pycache__"]
+
+[dependencies]
+anyhow = "1"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.10"
+clap = { version = "4", features = ["derive"] }
+crossterm = "0.29"
+dirs = "6"
+ratatui = "0.30.2"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tempfile = "3"
+unicode-width = "0.2"
+
+[profile.release]
+lto = "thin"
+strip = true
