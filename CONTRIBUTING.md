@@ -15,6 +15,8 @@ cargo run --locked -- --demo
 
 Demo mode provides a repeatable schedule without network access.
 
+For distribution changes, follow the [npm package maintenance guide](docs/npm.md).
+
 ## Find the owning module
 
 Read [module ownership](docs/architecture.md#module-ownership) before a change that crosses modules. The main ownership boundaries are:
