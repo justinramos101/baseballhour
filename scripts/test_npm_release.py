@@ -151,6 +151,19 @@ class PublicationTests(unittest.TestCase):
             self.assertIn("exact.tgz", run.call_args.args[0])
             self.assertIn("--provenance", run.call_args.args[0])
             run.reset_mock()
+            # A version that appears after a few minutes still succeeds.
+            late = publisher.VISIBILITY_TIMEOUT_SECONDS // publisher.VISIBILITY_POLL_SECONDS
+            registry.side_effect = [None] * late + ["sha512-expected"]
+            publisher.publish(*args)
+            run.reset_mock()
+            registry.reset_mock(side_effect=True)
+            registry.return_value = None
+            with self.assertRaisesRegex(ValueError, "still absent after 300 seconds"):
+                publisher.publish(*args)
+            # One check before publishing, then a poll every interval through the timeout.
+            self.assertEqual(registry.call_count, 1 + late + 1)
+            run.reset_mock()
+            registry.reset_mock()
             registry.side_effect = [None]
             run.side_effect = subprocess.CalledProcessError(1, "npm publish")
             with self.assertRaises(subprocess.CalledProcessError):
