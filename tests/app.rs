@@ -204,7 +204,7 @@ fn preferences_recover_from_corruption_and_round_trip_after_save() {
     std::fs::write(directory.path().join("preferences.json"), b"{broken").unwrap();
     let (preferences, warning) = load_preferences(directory.path());
     assert!(warning.is_some());
-    assert!(preferences.favorites.is_empty());
+    assert_eq!(preferences.favorites, std::collections::BTreeSet::new());
     assert!(preferences.place.is_none());
     let mut app = loaded_app();
     app.preferences.favorites.insert(147);
@@ -219,7 +219,7 @@ fn preferences_recover_from_corruption_and_round_trip_after_save() {
         vec![147]
     );
     assert_eq!(saved.place.as_ref().unwrap().name, "Denver");
-    #[expect(
+    #[allow(
         clippy::float_cmp,
         reason = "Serialization must preserve the exact coordinate"
     )]
@@ -284,7 +284,7 @@ fn start_labels_mark_games_on_an_adjacent_local_day() {
 fn distances_are_sensible_at_city_and_dateline_scales() {
     let denver = Coordinates::new(39.7392, -104.9903).unwrap();
     let new_york = Coordinates::new(40.7128, -74.0060).unwrap();
-    #[expect(
+    #[allow(
         clippy::float_cmp,
         reason = "Distance to the identical point must be exactly zero"
     )]

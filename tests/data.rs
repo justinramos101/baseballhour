@@ -25,7 +25,7 @@ fn fixture() -> Value {
 fn recorded_mlb_scores_venue_pitchers_and_linescore() {
     let result = parse_schedule(MLB, query(League::Mlb), fetched()).unwrap();
     assert_eq!(result.games.len(), 15);
-    assert!(result.warnings.is_empty());
+    assert_eq!(result.warnings, Vec::<String>::new());
     let game = &result.games[0];
     assert_eq!(game.id, 822_716);
     assert_eq!(game.away.name, "Pittsburgh Pirates");
@@ -36,7 +36,7 @@ fn recorded_mlb_scores_venue_pitchers_and_linescore() {
     );
     assert_eq!(game.venue.name, "Nationals Park");
     assert_eq!(game.venue.city, "Washington");
-    #[expect(
+    #[allow(
         clippy::float_cmp,
         reason = "Parsing must preserve the exact fixture coordinate"
     )]
@@ -130,7 +130,7 @@ fn invalid_envelopes_are_errors_and_partial_results_warn() {
     )
     .unwrap();
     assert!(empty.games.is_empty());
-    assert!(empty.warnings.is_empty());
+    assert_eq!(empty.warnings, Vec::<String>::new());
     let mut body = fixture();
     body["dates"][0]["games"][0] = json!({});
     let result = parse_schedule(&body.to_string(), query(League::Mlb), fetched()).unwrap();
