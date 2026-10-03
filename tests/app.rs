@@ -82,17 +82,17 @@ fn an_outdated_response_cannot_replace_the_current_schedule() {
 #[test]
 fn selected_game_survives_a_reordered_refresh() {
     let mut app = loaded_app();
-    app.selected = Some(823526);
+    app.selected = Some(823_526);
     let mut refresh = demo(app.query);
     refresh.games.reverse();
     let selected = refresh
         .games
         .iter_mut()
-        .find(|game| game.id == 823526)
+        .find(|game| game.id == 823_526)
         .unwrap();
     selected.home.score = Some(9);
     assert!(app.accept(refresh, DataState::Fresh));
-    assert_eq!(app.selected, Some(823526));
+    assert_eq!(app.selected, Some(823_526));
     assert_eq!(app.selected_game().unwrap().home.score, Some(9));
     assert_eq!(app.selected_game().unwrap().home.abbreviation, "NYY");
 }
@@ -140,7 +140,7 @@ fn following_starts_empty_and_f_can_follow_each_side() {
     assert!(app.visible_games().is_empty());
     assert!(app.selected.is_none());
     press(&mut app, KeyCode::Char('1'));
-    app.selected = Some(823526);
+    app.selected = Some(823_526);
     press(&mut app, KeyCode::Char('f'));
     assert!(matches!(app.input, Input::Favorite { index: 1 }));
     assert_eq!(press(&mut app, KeyCode::Enter), Action::Save);
@@ -154,7 +154,7 @@ fn following_starts_empty_and_f_can_follow_each_side() {
     );
     press(&mut app, KeyCode::Char('2'));
     assert_eq!(app.visible_games().len(), 1);
-    assert_eq!(app.selected, Some(823526));
+    assert_eq!(app.selected, Some(823_526));
     press(&mut app, KeyCode::Char('f'));
     press(&mut app, KeyCode::Up);
     assert_eq!(press(&mut app, KeyCode::Enter), Action::Save);
@@ -204,7 +204,7 @@ fn preferences_recover_from_corruption_and_round_trip_after_save() {
     std::fs::write(directory.path().join("preferences.json"), b"{broken").unwrap();
     let (preferences, warning) = load_preferences(directory.path());
     assert!(warning.is_some());
-    assert!(preferences.favorites.is_empty());
+    assert_eq!(preferences.favorites, std::collections::BTreeSet::new());
     assert!(preferences.place.is_none());
     let mut app = loaded_app();
     app.preferences.favorites.insert(147);
@@ -219,7 +219,13 @@ fn preferences_recover_from_corruption_and_round_trip_after_save() {
         vec![147]
     );
     assert_eq!(saved.place.as_ref().unwrap().name, "Denver");
-    assert_eq!(saved.place.unwrap().coordinates.latitude, 39.739);
+    #[allow(
+        clippy::float_cmp,
+        reason = "Serialization must preserve the exact coordinate"
+    )]
+    {
+        assert_eq!(saved.place.unwrap().coordinates.latitude, 39.739);
+    }
     assert_eq!(std::fs::read_dir(directory.path()).unwrap().count(), 1);
 
     app.preferences.favorites.insert(142);
@@ -278,7 +284,13 @@ fn start_labels_mark_games_on_an_adjacent_local_day() {
 fn distances_are_sensible_at_city_and_dateline_scales() {
     let denver = Coordinates::new(39.7392, -104.9903).unwrap();
     let new_york = Coordinates::new(40.7128, -74.0060).unwrap();
-    assert_eq!(denver.miles_to(denver), 0.0);
+    #[allow(
+        clippy::float_cmp,
+        reason = "Distance to the identical point must be exactly zero"
+    )]
+    {
+        assert_eq!(denver.miles_to(denver), 0.0);
+    }
     assert!((denver.miles_to(new_york) - 1628.0).abs() < 3.0);
     let west = Coordinates::new(0.0, 179.0).unwrap();
     let east = Coordinates::new(0.0, -179.0).unwrap();

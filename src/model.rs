@@ -23,6 +23,7 @@ impl League {
         Self::SingleA,
     ];
 
+    #[must_use]
     pub fn label(self) -> &'static str {
         match self {
             Self::Mlb => "MLB",
@@ -34,6 +35,7 @@ impl League {
         }
     }
 
+    #[must_use]
     pub fn sport_ids(self) -> &'static str {
         match self {
             Self::Mlb => "1",
@@ -55,6 +57,10 @@ pub struct Query {
 pub const MIN_DATE: NaiveDate = NaiveDate::from_ymd_opt(1900, 1, 1).unwrap();
 pub const MAX_DATE: NaiveDate = NaiveDate::from_ymd_opt(2200, 12, 31).unwrap();
 
+/// Parse a schedule date in the supported 1900–2200 range.
+///
+/// # Errors
+/// Returns an error if the date is malformed or outside the supported range.
 pub fn parse_date(value: &str) -> Result<NaiveDate, String> {
     NaiveDate::parse_from_str(value, "%Y-%m-%d")
         .ok()
@@ -62,11 +68,12 @@ pub fn parse_date(value: &str) -> Result<NaiveDate, String> {
         .ok_or_else(|| "expected YYYY-MM-DD between 1900 and 2200".into())
 }
 
+#[must_use]
 pub fn shift_date(date: NaiveDate, days: i64) -> Option<NaiveDate> {
     let shifted = if days < 0 {
         date.checked_sub_days(Days::new(days.unsigned_abs()))
     } else {
-        date.checked_add_days(Days::new(days as u64))
+        date.checked_add_days(Days::new(days.unsigned_abs()))
     }?;
     (MIN_DATE..=MAX_DATE).contains(&shifted).then_some(shifted)
 }
@@ -88,6 +95,7 @@ pub struct Coordinates {
 }
 
 impl Coordinates {
+    #[must_use]
     pub fn new(latitude: f64, longitude: f64) -> Option<Self> {
         (latitude.is_finite()
             && longitude.is_finite()
@@ -99,6 +107,7 @@ impl Coordinates {
         })
     }
 
+    #[must_use]
     pub fn miles_to(self, other: Self) -> f64 {
         let a = ((other.latitude - self.latitude).to_radians() / 2.0)
             .sin()
@@ -133,10 +142,12 @@ pub enum GameStatus {
 }
 
 impl GameStatus {
+    #[must_use]
     pub fn is_active(self) -> bool {
         matches!(self, Self::Live | Self::Delayed | Self::Suspended)
     }
 
+    #[must_use]
     pub fn rank(self) -> u8 {
         match self {
             Self::Live => 0,
@@ -200,6 +211,7 @@ impl Game {
             .map_or(VenueKey::UnknownGame(self.id), VenueKey::Known)
     }
 
+    #[must_use]
     pub fn matches(&self, search: &str) -> bool {
         let needle = search.to_lowercase();
         [
@@ -214,6 +226,7 @@ impl Game {
         .any(|s| s.to_lowercase().contains(&needle))
     }
 
+    #[must_use]
     pub fn state_label(&self) -> String {
         if self.status == GameStatus::Live {
             if let Some(line) = &self.linescore

@@ -171,7 +171,7 @@ fn historical_slates_do_not_use_todays_dst_abbreviation() {
     let mut app = app();
     app.timezone = Some(chrono_tz::Pacific::Auckland);
     app.now = "2026-10-02T12:00:00Z".parse().unwrap();
-    app.selected = Some(823526);
+    app.selected = Some(823_526);
     let screen = plain(&app, 140, 42);
     assert!(screen.contains("Pacific/Auckland"));
     assert!(screen.contains("5:35 AM +1d"));

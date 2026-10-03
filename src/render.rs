@@ -19,12 +19,21 @@ pub enum Format {
     Svg,
 }
 
+/// Capture a terminal frame in an in-memory buffer.
+///
+/// # Panics
+/// Panics if the in-memory terminal cannot be initialized or drawn.
+#[must_use]
 pub fn capture(app: &App, width: u16, height: u16) -> Buffer {
     let mut terminal = Terminal::new(TestBackend::new(width, height)).unwrap();
     terminal.draw(|frame| ui::draw(frame, app)).unwrap();
     terminal.backend().buffer().clone()
 }
 
+/// Write a captured frame in the requested output format.
+///
+/// # Errors
+/// Returns an error if the output writer fails.
 pub fn write(buffer: &Buffer, format: Format, out: &mut impl Write) -> io::Result<()> {
     if matches!(format, Format::Svg) {
         return svg(buffer, out);
@@ -42,7 +51,7 @@ pub fn write(buffer: &Buffer, format: Format, out: &mut impl Write) -> io::Resul
                 }
             }
             write!(out, "{}", cell.symbol())?;
-            x += cell.symbol().width().max(1) as u16;
+            x = x.saturating_add(u16::try_from(cell.symbol().width().max(1)).unwrap_or(u16::MAX));
         }
         if matches!(format, Format::Ansi) {
             write!(out, "\x1b[0m")?;
@@ -101,7 +110,9 @@ fn svg(buffer: &Buffer, out: &mut impl Write) -> io::Result<()> {
                     break;
                 }
                 content.push_str(current.symbol());
-                x += current.symbol().width().max(1) as u16;
+                x = x.saturating_add(
+                    u16::try_from(current.symbol().width().max(1)).unwrap_or(u16::MAX),
+                );
             }
             let (r, g, b) = rgb(cell.fg, true);
             let (br, bg, bb) = rgb(cell.bg, false);
